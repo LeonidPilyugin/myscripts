@@ -11,7 +11,7 @@ if [[ ! -d $1 ]]; then
 fi
 
 for directory in $(find "$1" -type d); do
-	if [[ $(basename "$directory") == "trajectory" ]]; then
+    if [ "$(basename "$directory")" == "trajectory" ] || [ "$(basename "$directory")" == "checkpoint" ] || [ "$(basename "$directory")" == "checkpoints" ]; then
 		rm -rf "$directory"
 	fi
 done
