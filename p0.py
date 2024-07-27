@@ -6,7 +6,6 @@ import toml
 import subprocess
 from dataclasses import dataclass, field, asdict
 import numpy as np
-from tqdm import tqdm
 
 LAMMPS_FORMAT = r"""
 # ========== begin ==========
@@ -67,6 +66,7 @@ class GDParams:
     parameters: int = 0
     pressure_error: int = 50
     temperature_error: int = 20
+    learning_rate = 0.5
 
 @dataclass
 class Params:
@@ -149,7 +149,7 @@ def gradient_descent(params: Params):
             previous_pressure = abs(current_pressure[0]) * 10
 
         new_params = np.abs(
-            current_params - current_pressure[0] * (current_params - previous_params) / (current_pressure[0] - previous_pressure)
+            current_params - current_pressure[0] * (current_params - previous_params) / (current_pressure[0] - previous_pressure) * params.gd_params.learning_rate
         )
 
         previous_pressure = current_pressure[0]
