@@ -65,10 +65,10 @@ class LammpsParams:
 
 @dataclass
 class GDParams:
-    iterations: int = 1000
+    iterations: int = 20
     parameters: int = 0
-    pressure_error: int = 100
-    temperature_error: int = 50
+    pressure_error: int = 50
+    temperature_error: int = 20
 
 @dataclass
 class Params:
