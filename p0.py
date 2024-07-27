@@ -16,11 +16,11 @@ atom_style atomic
 # ========== simulation box ==========
 {create_box}
 
-# ========== load potential ==========
-{load_potential}
-
 # ========== create reference system ==========
 {create_atoms}
+
+# ========== load potential ==========
+{load_potential}
 
 # ========== set velocity ==========
 velocity all create {temperature} {random_seed}
