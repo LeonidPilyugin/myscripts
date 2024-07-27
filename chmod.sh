@@ -5,4 +5,4 @@ if [[ $1 == "-h" ]]; then
     exit 0
 fi
 
-find "$(dirname "$0")" -iname "*.sh" -exec chmod +x {} \;
+find "$(dirname "$0")" -type f \( -iname \*.sh -o -iname \*.py \) -exec chmod +x {} \;
