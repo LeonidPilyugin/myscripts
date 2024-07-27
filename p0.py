@@ -139,7 +139,8 @@ def gradient_descent(params: Params):
         params.lammps_params.parameters = current_params
         temperature, current_pressure = lammps_run(params.lammps_params)
 
-        print(f"{params}: T = {temperature[0]} +/- {temperature[1]}, P = {current_pressure[0]} +/- {current_pressure[1]}")
+        print(f"{current_params}: T = {temperature[0]} +/- {temperature[1]}, P = {current_pressure[0]} +/- {current_pressure[1]}")
+        sys.stdout.flush()
 
         # if abs(current_pressure) < params.gd_params.pressure_error:
         #     break
