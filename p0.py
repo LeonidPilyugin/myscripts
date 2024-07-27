@@ -11,7 +11,7 @@ LAMMPS_FORMAT = r"""
 # ========== begin ==========
 boundary p p p
 units metal
-atom_style atomic
+atom_style {atom_style}
 
 # ========== simulation box ==========
 {create_box}
@@ -51,6 +51,7 @@ class LammpsParams:
     create_box: str = ""
     load_potential: str = ""
     create_atoms: str = ""
+    atom_style: str = "atomic"
     steps: int = 50000
     relax_steps: int = 50000
     mean: int = 1000
@@ -194,6 +195,7 @@ if __name__ == "__main__":
     parameters.t_step = int(data["t_step"])
     parameters.gd_params.parameters = int(data["parameters"])
     parameters.lammps_params.create_box = data["create_box"]
+    parameters.lammps_params.atom_style = data["atom_style"]
     parameters.lammps_params.load_potential = data["load_potential"]
     parameters.lammps_params.create_atoms = data["create_atoms"]
     parameters.lammps_params.lammps_executable = data["lammps_executable"]
