@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
 import os
-from re import L
 import sys
 import toml
 import subprocess
-from pathlib import Path
 from dataclasses import dataclass, field, asdict
 import numpy as np
 from tqdm import tqdm
@@ -101,8 +99,8 @@ def lammps_run(params: LammpsParams):
         p = subprocess.run(
             command,
             shell=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            stdout=sys.stderr,
+            stderr=sys.stderr,
         )
         assert p.returncode == 0
 
@@ -127,35 +125,37 @@ def lammps_run(params: LammpsParams):
         os.unlink(f"{filename}.log")
         pass
 
-    return np.mean(temperatures[1:]), np.mean(pressures[1:])
+    return (np.mean(temperatures[1:]), np.std(temperatures[1:])), (np.mean(pressures[1:]), np.std(pressures[1:]))
 
 
 def gradient_descent(params: Params):
     current_params = np.array([5.0] * parameters.gd_params.parameters)
     previous_params = np.array([0.0] * parameters.gd_params.parameters)
-    current_pressure = 0.0
+    current_pressure = None
     previous_pressure = None
     temperature = None
 
-    for _ in tqdm(range(params.gd_params.iterations)):
+    while current_pressure is None or abs(current_pressure[0]) >= current_pressure[1]:
         params.lammps_params.parameters = current_params
         temperature, current_pressure = lammps_run(params.lammps_params)
 
-        if abs(current_pressure) < params.gd_params.pressure_error:
-            break
+        print(f"{params}: T = {temperature[0]} +/- {temperature[1]}, P = {current_pressure[0]} +/- {current_pressure[1]}")
+
+        # if abs(current_pressure) < params.gd_params.pressure_error:
+        #     break
 
         if previous_pressure is None:
-            previous_pressure = abs(current_pressure) * 10
+            previous_pressure = abs(current_pressure[0]) * 10
 
         new_params = np.abs(
-            current_params - current_pressure * (current_params - previous_params) / (current_pressure - previous_pressure)
+            current_params - current_pressure[0] * (current_params - previous_params) / (current_pressure[0] - previous_pressure)
         )
 
-        previous_pressure = current_pressure
+        previous_pressure = current_pressure[0]
         previous_params = current_params
         current_params = new_params
 
-    return current_params, current_pressure, temperature
+    return current_params, current_pressure[0], current_pressure[1], temperature[0], temperature[1]
 
 
 
@@ -164,23 +164,19 @@ def process(params: Params):
     for temperature in np.arange(params.t_start, params.t_stop, params.t_step):
         print(f"Processing {temperature}")
         params.lammps_params.temperature = temperature
-        parameters, pres, temp = gradient_descent(params)
-
-        assert abs(temp - temperature) < params.gd_params.temperature_error
-        assert abs(pres) < params.gd_params.pressure_error
-
-        param_list.append((parameters, temp, pres))
+        parameters, pres, dpres, temp, dtemp = gradient_descent(params)
+        param_list.append((parameters, temp, dtemp, pres, dpres))
 
     return param_list
 
 def print_parameters(param_list: list):
     first = param_list[0]
-    print("T,P,", end="")
+    print("T,DT,P,DP,", end="")
     for i in range(len(first[0])):
         print(f"P{i},", end="")
     print()
     for param in param_list:
-        print(f"{param[1]},{param[2]},", end="")
+        print(f"{param[1]},{param[2]},{param[3]},{param[4]}", end="")
         for p in param[0]:
             print(f"{p},")
 
