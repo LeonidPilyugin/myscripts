@@ -3,10 +3,10 @@
 import os
 from re import L
 import sys
-import tomllib
+import toml
 import subprocess
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field, asdict
 import numpy as np
 from tqdm import tqdm
 
@@ -50,30 +50,30 @@ run {steps}
 @dataclass
 class LammpsParams:
     temperature: int = 0
-    parameters: np.ndarray = np.array([])
+    parameters: np.ndarray = field(default_factory=lambda: np.array([]))
     create_box: str = ""
     load_potential: str = ""
     create_atoms: str = ""
-    steps: int = 100000
-    relax_steps: int = 30000
+    steps: int = 50000
+    relax_steps: int = 50000
     mean: int = 1000
     frame: int = 10000
     lammps_executable: str = ""
     random_seed: int = 10
-    nvt_ng_param = 0.3
+    nvt_ng_param: float = 0.3
+    timestep: float = 1e-3
 
 @dataclass
 class GDParams:
     iterations: int = 1000
-    learning_rate = 0.01
     parameters: int = 0
     pressure_error: int = 100
     temperature_error: int = 50
 
 @dataclass
 class Params:
-    lammps_params: LammpsParams = LammpsParams()
-    gd_params: GDParams = GDParams()
+    lammps_params: LammpsParams = field(default_factory=lambda: LammpsParams())
+    gd_params: GDParams = field(default_factory=lambda: GDParams())
     t_start: float = 0
     t_stop: float = 0
     t_step: float = 0
@@ -81,11 +81,14 @@ class Params:
 
 def lammps_run(params: LammpsParams):
     script = LAMMPS_FORMAT.format(
-        **params.__dict__,
+        **asdict(params),
+    )
+
+    script = script.format(
         **{ f"P{i}": params.parameters[i] for i in range(len(params.parameters)) }
     )
 
-    filename = f"/tmp/{os.urandom(32)}.lmp"
+    filename = f"/tmp/{os.urandom(32).hex()}.lmp"
 
     temperatures = []
     pressures = []
@@ -94,8 +97,10 @@ def lammps_run(params: LammpsParams):
         with open(filename, "w") as f:
             f.write(script)
 
+        command = f"{params.lammps_executable} -in {filename} -l {filename}.log",
         p = subprocess.run(
-            f"{params.lammps_executable} -in {filename} -l {filename}.log",
+            command,
+            shell=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
@@ -104,21 +109,25 @@ def lammps_run(params: LammpsParams):
         with open(f"{filename}.log") as f:
             read_thermo = False
             for line in f.readlines():
-                if line.startswith("Per MPI rank"):
+                if line.startswith("Per MPI"):
                     read_thermo = True
                     continue
                 if line.startswith("Loop time"):
                     read_thermo = False
                     continue
                 if read_thermo:
-                    _, temp, pres = map(float, line.split())
-                    temperatures.append(temp)
-                    pressures.append(pres)
+                    try:
+                        _, temp, pres = map(float, line.split())
+                        temperatures.append(temp)
+                        pressures.append(pres)
+                    except Exception:
+                        continue
     finally:
         os.unlink(filename)
         os.unlink(f"{filename}.log")
+        pass
 
-    return np.mean(temperatures), np.mean(pressures)
+    return np.mean(temperatures[1:]), np.mean(pressures[1:])
 
 
 def gradient_descent(params: Params):
@@ -131,19 +140,20 @@ def gradient_descent(params: Params):
     for _ in tqdm(range(params.gd_params.iterations)):
         params.lammps_params.parameters = current_params
         temperature, current_pressure = lammps_run(params.lammps_params)
-        
+
         if abs(current_pressure) < params.gd_params.pressure_error:
             break
 
         if previous_pressure is None:
             previous_pressure = abs(current_pressure) * 10
 
-        params_grad = (current_pressure - previous_pressure) / (current_params - previous_params)
+        new_params = np.abs(
+            current_params - current_pressure * (current_params - previous_params) / (current_pressure - previous_pressure)
+        )
 
         previous_pressure = current_pressure
         previous_params = current_params
-
-        current_params = current_params - params_grad * params.gd_params.learning_rate
+        current_params = new_params
 
     return current_params, current_pressure, temperature
 
@@ -176,17 +186,18 @@ def print_parameters(param_list: list):
 
 
 if __name__ == "__main__":
-    with open(sys.argv[1], "rb") as f:
-        data = tomllib.load(f)
+    with open(sys.argv[1]) as f:
+        data = toml.load(f)
 
     parameters = Params()
     parameters.t_start = float(data["t_start"])
     parameters.t_stop = float(data["t_stop"])
     parameters.t_step = int(data["t_step"])
-    parameters.gd_params.parameters = int(data["paraeters"])
+    parameters.gd_params.parameters = int(data["parameters"])
     parameters.lammps_params.create_box = data["create_box"]
     parameters.lammps_params.load_potential = data["load_potential"]
     parameters.lammps_params.create_atoms = data["create_atoms"]
+    parameters.lammps_params.lammps_executable = data["lammps_executable"]
 
     param_list = process(parameters)
     print_parameters(param_list)
