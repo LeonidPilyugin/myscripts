@@ -19,7 +19,7 @@ EOF
 
 conda activate spmi
 python3 "$HOME/opt/spmi/src/spmi/app.py" load "$file"
-python3 "$HOME/opt/spmi/src/spmi/app.py" start "\'p0.$1\'"
+python3 "$HOME/opt/spmi/src/spmi/app.py" start "p0.$1"
 
 conda deactivate
 
