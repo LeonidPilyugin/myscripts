@@ -137,15 +137,19 @@ def gradient_descent(params: Params, current_params=None):
     previous_pressure = None
     temperature = None
 
-    while current_pressure is None or abs(current_pressure[0]) >= current_pressure[1]:
+    delta = 10
+
+    while current_pressure is None or all(
+        [
+            abs(current_pressure[0]) >= current_pressure[1],
+            delta >= 1e-6
+        ]
+    ):
         params.lammps_params.parameters = current_params
         temperature, current_pressure = lammps_run(params.lammps_params)
 
         print(f"{current_params}: T = {temperature[0]} +/- {temperature[1]}, P = {current_pressure[0]} +/- {current_pressure[1]}")
         sys.stdout.flush()
-
-        # if abs(current_pressure) < params.gd_params.pressure_error:
-        #     break
 
         if previous_pressure is None:
             previous_pressure = abs(current_pressure[0]) * 10
@@ -153,6 +157,8 @@ def gradient_descent(params: Params, current_params=None):
         new_params = np.abs(
             current_params - current_pressure[0] * (current_params - previous_params) / (current_pressure[0] - previous_pressure) * params.gd_params.learning_rate
         )
+
+        delta = np.max(np.abs((new_params - current_params) / current_params))
 
         previous_pressure = current_pressure[0]
         previous_params = current_params
