@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/zsh
+
+source $HOME/.zshrc
 
 file=/tmp/$(hexdump -vn16 -e'4/4 "%08x" 1 "\n"' /dev/urandom).toml
 cat <<EOF > "$file"
