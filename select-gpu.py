@@ -29,7 +29,7 @@ def rocm():
 
 
 def cuda():
-    smi_output = subprocess.check_output("rocm-smi", shell=True).decode("ascii").strip().split("\n")
+    smi_output = subprocess.check_output("nvidia-smi", shell=True).decode("ascii").strip().split("\n")
     gpus = []
     
     for i in range(len(smi_output)):
