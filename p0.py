@@ -128,8 +128,9 @@ def lammps_run(params: LammpsParams):
     return (np.mean(temperatures[1:]), np.std(temperatures[1:])), (np.mean(pressures[1:]), np.std(pressures[1:]))
 
 
-def gradient_descent(params: Params):
-    current_params = np.array([5.0] * parameters.gd_params.parameters)
+def gradient_descent(params: Param, current_params=None):
+    if current_params is None:
+        current_params = np.array([5.0] * parameters.gd_params.parameters)
     previous_params = np.array([0.0] * parameters.gd_params.parameters)
     current_pressure = None
     previous_pressure = None
@@ -162,10 +163,11 @@ def gradient_descent(params: Params):
 
 def process(params: Params):
     param_list = []
+    parameters = None
     for temperature in np.arange(params.t_start, params.t_stop, params.t_step):
         print(f"Processing {temperature}")
         params.lammps_params.temperature = temperature
-        parameters, pres, dpres, temp, dtemp = gradient_descent(params)
+        parameters, pres, dpres, temp, dtemp = gradient_descent(params, parameters)
         param_list.append((parameters, temp, dtemp, pres, dpres))
 
     return param_list
