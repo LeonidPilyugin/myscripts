@@ -64,4 +64,4 @@ if __name__ == "__main__":
         print("Could not find smi tool")
         exit(1)
     
-    print(select_gpu(gpus))
+    print(select_gpu(gpus).id)
