@@ -45,7 +45,7 @@ def cuda():
 
     return gpus
 
-def select_gpu(gpus: list[GpuInfo]):
+def select_gpu(gpus):
     gpus.sort(key=lambda x: x.pwr)
     best_gpu = gpus[0]
     for g in gpus:
