@@ -112,14 +112,14 @@ def print_points(points):
     e0 = 0.0
     for point in points:
         if point.x == point.y == 0.0:
-            e0 = point.e 
+            e0 = point.p
             break
     for point in points:
-        point.e -= e0 
+        point.p -= e0
 
     print("x,y,e")
     for point in points:
-        print(f"{point.x},{point.y},{point.e}")
+        print(f"{point.x},{point.y},{point.p}")
 
 if __name__ == "__main__":
     with open(sys.argv[1]) as f:
