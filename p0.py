@@ -152,7 +152,7 @@ def gradient_descent(params: Params, current_params=None):
         sys.stdout.flush()
 
         if previous_pressure is None:
-            previous_pressure = current_pressure
+            previous_pressure = current_pressure[0]
             previous_params = current_params
             current_params *= 0.9
             continue
