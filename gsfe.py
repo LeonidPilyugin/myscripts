@@ -17,6 +17,9 @@ atom_style {atom_style}
 
 compute PE all pe 
 
+region TOP block $(xlo) $(xhi) $(ylo) $(yhi) $((zlo + zhi) / 2) $(zhi) units box
+region BOTTOM block $(xlo) $(xhi) $(ylo) $(yhi) $(zlo) $((zlo + zhi) / 2) units box
+
 label loop_x
 variable step_x loop 0 {steps}
 
@@ -27,9 +30,6 @@ variable dx equal $(v_step_x * {x_displ} / {steps})
 variable dy equal $(v_step_y * {y_displ} / {steps})
 
 {create_atoms}
-
-region TOP block $(xlo) $(xhi) $(ylo) $(yhi) $((zlo + zhi) / 2) $(zhi) units box
-region BOTTOM block $(xlo) $(xhi) $(ylo) $(yhi) $(zlo) $((zlo + zhi) / 2) units box
 
 group TOP_GROUP region TOP 
 group BOTTOM_GROUP region BOTTOM 
