@@ -23,8 +23,8 @@ variable step_x loop 0 {steps}
 label loop_y
 variable step_y loop 0 {steps}
 
-variable dx equal v_step_x * {x_displ} / {steps}
-variable dy equal v_step_y * {y_displ} / {steps}
+variable dx equal $(v_step_x * {x_displ} / {steps})
+variable dy equal $(v_step_y * {y_displ} / {steps})
 
 {create_atoms}
 
