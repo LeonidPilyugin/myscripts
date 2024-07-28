@@ -183,16 +183,17 @@ def process(params: Params):
 
     return param_list
 
-def print_parameters(param_list: list):
+def print_parameters(param_list: list, f):
     first = param_list[0]
-    print("T,DT,P,DP,", end="")
+    f.write("T,DT,P,DP,", end="")
     for i in range(len(first[0])):
-        print(f"P{i},", end="")
-    print()
+        f.write(f"P{i},", end="")
+    f.write("\n")
     for param in param_list:
-        print(f"{param[1]},{param[2]},{param[3]},{param[4]}", end="")
+        f.write(f"{param[1]},{param[2]},{param[3]},{param[4]}", end="")
         for p in param[0]:
-            print(f"{p},")
+            f.write(f"{p},")
+        f.write("\n")
 
 
 if __name__ == "__main__":
@@ -211,5 +212,6 @@ if __name__ == "__main__":
     parameters.lammps_params.lammps_executable = data["lammps_executable"]
 
     param_list = process(parameters)
-    print_parameters(param_list)
+    with open(sys.argv[2], "w") as f:
+        print_parameters(param_list, f)
   

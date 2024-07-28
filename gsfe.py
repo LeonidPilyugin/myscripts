@@ -138,6 +138,6 @@ if __name__ == "__main__":
     )
 
     points = lammps_run(parameters)
-    with open(sys.argv[2]) as f:
+    with open(sys.argv[2], "w") as f:
         print_points(points, f)
   

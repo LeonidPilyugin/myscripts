@@ -13,7 +13,7 @@ type = "screen"
 
 [task.wrapper]
 type = "default"
-command = "zsh -c 'source $HOME/.zshrc && conda activate p0 && p0.py $HOME/descriptors/p0/$1.toml'"
+command = "zsh -c 'source $HOME/.zshrc && conda activate p0 && p0.py $HOME/descriptors/p0/$1.toml $HOME/results/p0/$1.csv'"
 mixed_stdout = false
 EOF
 
