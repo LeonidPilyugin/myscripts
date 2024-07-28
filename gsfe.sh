@@ -13,7 +13,7 @@ type = "screen"
 
 [task.wrapper]
 type = "default"
-command = "gsfe.py $HOME/descriptors/gsfe/$1.toml"
+command = "gsfe.py $HOME/descriptors/gsfe/$1.toml $HOME/results/gsfe/$1.csv"
 mixed_stdout = false
 EOF
 

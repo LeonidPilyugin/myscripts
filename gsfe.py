@@ -108,7 +108,7 @@ def lammps_run(params: Params):
     return points
 
 
-def print_points(points):
+def print_points(points, f):
     e0 = 0.0
     for point in points:
         if point.x == point.y == 0.0:
@@ -117,9 +117,9 @@ def print_points(points):
     for point in points:
         point.p -= e0
 
-    print("x,y,e")
+    f.write("x,y,e\n")
     for point in points:
-        print(f"{point.x},{point.y},{point.p}")
+        f.write(f"{point.x},{point.y},{point.p}\n")
 
 if __name__ == "__main__":
     with open(sys.argv[1]) as f:
@@ -138,5 +138,6 @@ if __name__ == "__main__":
     )
 
     points = lammps_run(parameters)
-    print_points(points)
+    with open(sys.argv[2]) as f:
+        print_points(points, f)
   
