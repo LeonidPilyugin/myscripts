@@ -67,7 +67,7 @@ class GDParams:
     parameters: int = 0
     pressure_error: int = 50
     temperature_error: int = 20
-    learning_rate = 0.5
+    learning_rate = 0.8
 
 @dataclass
 class Params:
