@@ -8,7 +8,7 @@ file=/tmp/$(hexdump -vn16 -e'4/4 "%08x" 1 "\n"' /dev/urandom).toml
 cat <<EOF > "$file"
 [task]
 id = "gsfe.$1"
-comment = "Compute zero isobar"
+comment = "Get GSFE in plane"
 
 [task.backend]
 type = "screen"
