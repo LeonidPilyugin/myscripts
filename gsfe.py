@@ -13,6 +13,8 @@ atom_style {atom_style}
 
 {create_box}
 
+print "BOX_SIZE: $(xhi - xlo) $(yhi - ylo) $(zhi - zlo)"
+
 {load_potential}
 
 compute PE all pe 
@@ -39,7 +41,7 @@ fix SETFORCE_FIX all setforce 0.0 0.0 NULL
 minimize {minimize_params}
 
 unfix SETFORCE_FIX
-print "GSFE_DATA: $(v_dx),$(v_dy),$(c_PE)"
+print "GSFE_DATA: $(v_dx) $(v_dy) $(c_PE)"
 delete_atoms group all
 
 next step_y
@@ -74,6 +76,7 @@ def lammps_run(params: Params):
     filename = f"/tmp/{os.urandom(32).hex()}.lmp"
 
     points = []
+    sizes = []
 
     try:
         with open(filename, "w") as f:
@@ -90,8 +93,10 @@ def lammps_run(params: Params):
 
         with open(f"{filename}.log") as f:
             for line in f.readlines():
+                if line.strip().startswith("BOX_SIZE:"):
+                    sizes = list(map(float, line.strip().split()[1:]))
                 if line.strip().startswith("GSFE_DATA:"):
-                    data = list(map(float, line.strip().split()[1].split(",")))
+                    data = list(map(float, line.strip().split()[1:]))
                     points.append(
                         Point(
                             x = data[0],
@@ -105,10 +110,10 @@ def lammps_run(params: Params):
         os.unlink(f"{filename}.log")
         pass
 
-    return points
+    return points, sizes
 
-
-def print_points(points, f):
+def compute_gsfe(points, sizes):
+    eva2_to_jm2 = 16.02176565
     e0 = 0.0
     for point in points:
         if point.x == point.y == 0.0:
@@ -116,7 +121,11 @@ def print_points(points, f):
             break
     for point in points:
         point.p -= e0
+        point.p /= sizes[0] * sizes[1]
+        point.p *= eva2_to_jm2
+    return points
 
+def print_points(points, f):
     f.write("x,y,e\n")
     for point in points:
         f.write(f"{point.x},{point.y},{point.p}\n")
@@ -137,7 +146,8 @@ if __name__ == "__main__":
         minimize_params = data["minimize_params"],
     )
 
-    points = lammps_run(parameters)
+    points, sizes = lammps_run(parameters)
+    points = compute_gsfe(points, sizes)
     with open(sys.argv[2], "w") as f:
         print_points(points, f)
   
