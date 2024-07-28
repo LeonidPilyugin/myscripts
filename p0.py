@@ -152,7 +152,11 @@ def gradient_descent(params: Params, current_params=None):
         sys.stdout.flush()
 
         if previous_pressure is None:
-            previous_pressure = abs(current_pressure[0]) * 10
+            previous_pressure = current_pressure
+            previous_params = current_params
+            current_params *= 0.9
+            continue
+
 
         new_params = np.abs(
             current_params - current_pressure[0] * (current_params - previous_params) / (current_pressure[0] - previous_pressure) * params.gd_params.learning_rate
