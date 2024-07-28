@@ -91,7 +91,7 @@ def lammps_run(params: Params):
         with open(f"{filename}.log") as f:
             for line in f.readlines():
                 if line.strip().startswith("GSFE_DATA:"):
-                    data = list(map(float, line.strip().split()[1:].split(",")))
+                    data = list(map(float, line.strip().split()[1].split(",")))
                     points.append(
                         Point(
                             x = data[0],
