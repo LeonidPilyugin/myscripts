@@ -190,7 +190,7 @@ def print_parameters(param_list: list, f):
         f.write(f"P{i},", end="")
     f.write("\n")
     for param in param_list:
-        f.write(f"{param[1]},{param[2]},{param[3]},{param[4]}", end="")
+        f.write(f"{param[1]},{param[2]},{param[3]},{param[4]},", end="")
         for p in param[0]:
             f.write(f"{p},")
         f.write("\n")
