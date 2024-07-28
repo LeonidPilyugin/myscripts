@@ -154,7 +154,7 @@ def gradient_descent(params: Params, current_params=None):
         if previous_pressure is None:
             previous_pressure = current_pressure[0]
             previous_params = current_params
-            current_params *= 0.9
+            current_params = current_params * 0.9
             continue
 
 
@@ -167,8 +167,6 @@ def gradient_descent(params: Params, current_params=None):
         previous_pressure = current_pressure[0]
         previous_params = current_params
         current_params = new_params
-
-        print(current_params, previous_params, delta, current_pressure)
 
     return current_params, current_pressure[0], current_pressure[1], temperature[0], temperature[1]
 
