@@ -16,7 +16,6 @@ atom_style {atom_style}
 {load_potential}
 
 compute PE all pe 
-region REGION block INF INF INF INF 
 
 label loop_x
 variable step_x loop 0 {steps}
@@ -28,6 +27,9 @@ variable dx equal v_step_x * {x_displ} / {steps}
 variable dy equal v_step_y * {y_displ} / {steps}
 
 {create_atoms}
+
+region TOP block $(v_xlo) $(v_xhi) $(v_ylo) $(v_yhi) $((v_zlo + v_zhi) / 2) $(v_zhi) units box
+region BOTTOM block $(v_xlo) $(v_xhi) $(v_ylo) $(v_yhi) $(v_zlo) $((v_zlo + v_zhi) / 2) units box
 
 group TOP_GROUP region TOP 
 group BOTTOM_GROUP region BOTTOM 
