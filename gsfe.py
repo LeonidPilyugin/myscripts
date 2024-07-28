@@ -28,8 +28,8 @@ variable dy equal $(v_step_y * {y_displ} / {steps})
 
 {create_atoms}
 
-region TOP block $(v_xlo) $(v_xhi) $(v_ylo) $(v_yhi) $((v_zlo + v_zhi) / 2) $(v_zhi) units box
-region BOTTOM block $(v_xlo) $(v_xhi) $(v_ylo) $(v_yhi) $(v_zlo) $((v_zlo + v_zhi) / 2) units box
+region TOP block $(xlo) $(xhi) $(ylo) $(yhi) $((zlo + zhi) / 2) $(zhi) units box
+region BOTTOM block $(xlo) $(xhi) $(ylo) $(yhi) $(zlo) $((zlo + zhi) / 2) units box
 
 group TOP_GROUP region TOP 
 group BOTTOM_GROUP region BOTTOM 
