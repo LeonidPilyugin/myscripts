@@ -96,7 +96,7 @@ def lammps_run(params: LammpsParams):
 
     try:
         for i in range(params.processes):
-            mscript = script.format(random_seed=randint(1, 2 ** 30))
+            mscript = script.format(random_seed=randint(1, 100))
             with open(filename + str(i), "w") as f:
                 f.write(mscript)
 
