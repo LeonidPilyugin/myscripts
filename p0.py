@@ -133,7 +133,7 @@ def lammps_run(params: LammpsParams):
                         except Exception:
                             continue
     finally:
-        os.system("rm {filename}*")
+        os.system(f"rm {filename}*")
         pass
 
     ts = [ np.mean(x) for x in temperatures.values() ]
