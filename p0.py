@@ -55,7 +55,7 @@ class LammpsParams:
     create_atoms: str = ""
     atom_style: str = "atomic"
     steps: int = 50000
-    relax_steps: int = 50000
+    relax_steps: int = 200000
     mean: int = 1000
     frame: int = 10000
     lammps_executable: str = ""
