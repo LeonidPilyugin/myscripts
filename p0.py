@@ -141,8 +141,8 @@ def lammps_run(params: LammpsParams):
     ps = [ np.mean(x) for x in pressures.values() ]
     dps = [ np.std(x) for x in pressures.values() ]
 
-    aps = [ abs(p) for p in ps ]
-    best = aps.index(min(aps))
+    arr = [ abs(t - params.temperature) for t in ts ]
+    best = arr.index(min(arr))
 
     temperature, current_pressure = (ts[best], dts[best]), (ps[best], dps[best])
 
@@ -171,9 +171,9 @@ def optimize(params: Params, current_params=None):
         lammps(p)
 
     # get best params
-    while len(pressure_history) < 3 or all(
+    while len(pressure_history) < 5 or all(
         [
-            abs(pressure_history[-1][0]) < abs(pressure_history[-2][0]),
+            abs(pressure_history[-3][0]) < abs(pressure_history[-4][0]),
             abs(pressure_history[-1][0]) > pressure_history[-1][1],
         ]
     ):
