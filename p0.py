@@ -183,7 +183,7 @@ def optimize(params: Params, current_params=None):
 
         lammps(params_history[-1])
 
-    mp = [x[0] for x in pressure_history]
+    mp = [abs(x[0]) for x in pressure_history]
     best = mp.index(min(mp))
 
     return params_history[best], *pressure_history[best], *temperature_history[best]
