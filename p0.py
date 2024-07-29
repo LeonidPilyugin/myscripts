@@ -55,7 +55,7 @@ class LammpsParams:
     create_atoms: str = ""
     atom_style: str = "atomic"
     steps: int = 50000
-    relax_steps: int = 200000
+    relax_steps: int = 50000
     mean: int = 1000
     frame: int = 10000
     lammps_executable: str = ""
@@ -90,8 +90,8 @@ def lammps_run(params: LammpsParams):
 
     filename = f"/tmp/{os.urandom(32).hex()}.lmp"
 
-    temperatures = []
-    pressures = []
+    temperatures = { i: [] for i in range(params.processes) }
+    pressures = { i: [] for i in range(params.processes) }
     processes = []
 
     try:
@@ -126,15 +126,22 @@ def lammps_run(params: LammpsParams):
                     if read_thermo:
                         try:
                             _, temp, pres = map(float, line.split())
-                            temperatures.append(temp)
-                            pressures.append(pres)
+                            temperatures[i].append(temp)
+                            pressures[i].append(pres)
                         except Exception:
                             continue
     finally:
         os.system("rm {filename}*")
         pass
 
-    temperature, current_pressure = (np.mean(temperatures[1:]), np.std(temperatures[1:])), (np.mean(pressures[1:]), np.std(pressures[1:]))
+    ts = [ np.mean(x) for x in temperatures.values() ]
+    dts = [ np.std(x) for x in temperatures.values() ]
+    ps = [ np.mean(x) for x in pressures.values() ]
+    dps = [ np.std(x) for x in pressures.values() ]
+
+    best = ps.index(min(ps))
+
+    temperature, current_pressure = (ts[best], dts[best]), (ps[best], dps[best])
 
     print(f"{params.parameters}: T = {temperature[0]} +/- {temperature[1]}, P = {current_pressure[0]} +/- {current_pressure[1]}")
     sys.stdout.flush()
