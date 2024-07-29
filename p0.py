@@ -90,12 +90,14 @@ def lammps_run(params: LammpsParams):
 
     filename = f"/tmp/{os.urandom(32).hex()}.lmp"
 
-    temperatures = { i: [] for i in range(params.processes) }
-    pressures = { i: [] for i in range(params.processes) }
+    temperatures = {}
+    pressures = {}
     processes = []
 
     try:
         for i in range(params.processes):
+            temperatures[i] = []
+            pressures[i] = []
             mscript = script.format(random_seed=randint(1, 100))
             with open(filename + str(i), "w") as f:
                 f.write(mscript)
