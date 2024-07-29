@@ -139,7 +139,7 @@ def lammps_run(params: LammpsParams):
     ps = [ np.mean(x) for x in pressures.values() ]
     dps = [ np.std(x) for x in pressures.values() ]
 
-    best = ps.index(min(ps))
+    best = ps.index(min([abs(p) for p in ps]))
 
     temperature, current_pressure = (ts[best], dts[best]), (ps[best], dps[best])
 
