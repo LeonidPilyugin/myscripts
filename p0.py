@@ -54,7 +54,7 @@ class LammpsParams:
     load_potential: str = ""
     create_atoms: str = ""
     atom_style: str = "atomic"
-    steps: int = 100000
+    steps: int = 150000
     relax_steps: int = 50000
     mean: int = 1000
     frame: int = 5000
@@ -62,7 +62,7 @@ class LammpsParams:
     random_seed: int = 10
     nvt_ng_param: float = 0.3
     timestep: float = 1e-3
-    processes: int = 1
+    processes: int = 4
 
 @dataclass
 class GDParams:
