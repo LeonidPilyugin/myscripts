@@ -6,20 +6,26 @@ import numpy as np
 
 plt.style.use("https://raw.githubusercontent.com/LeonidPilyugin/mpl-style/main/simple.mplstyle")
 
+plt.xlabel("T, K")
+plt.ylabel("a, Å")
+
+T = []
+DT = []
+P = []
+DP = []
+A = []
+
 for arg in sys.argv[1:]:
-    x = []
-    y = []
-    p = []
     with open(arg) as f:
         for line in f.readlines()[1:]:
-            xx, yy, pp = map(float, line.split(","))
-            if yy != 0.0:
-                continue
-            x.append(xx)
-            y.append(yy)
-            p.append(pp)
+            t, dt, p, dp, a, _ = *map(float, line.split(",")[:-1]), ""
+            T.append(t)
+            DT.append(dt)
+            P.append(p)
+            DP.append(dp)
+            A.append(a)
 
-    plt.plot(x, p, label=arg)
+    plt.plot(T, A, marker=".", label=arg)
 
 if len(sys.argv) > 2:
     plt.legend()
