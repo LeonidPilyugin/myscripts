@@ -62,7 +62,7 @@ class LammpsParams:
     random_seed: int = 10
     nvt_ng_param: float = 0.3
     timestep: float = 1e-3
-    processes: int = 4
+    processes: int = 1
 
 @dataclass
 class GDParams:
