@@ -68,7 +68,7 @@ class LammpsParams:
 class GDParams:
     iterations: int = 20
     parameters: int = 0
-    learning_rate = 0.8
+    learning_rate = 1.0
 
 @dataclass
 class Params:
