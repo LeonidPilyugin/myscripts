@@ -54,10 +54,10 @@ class LammpsParams:
     load_potential: str = ""
     create_atoms: str = ""
     atom_style: str = "atomic"
-    steps: int = 50000
+    steps: int = 100000
     relax_steps: int = 50000
     mean: int = 1000
-    frame: int = 10000
+    frame: int = 5000
     lammps_executable: str = ""
     random_seed: int = 10
     nvt_ng_param: float = 0.3
