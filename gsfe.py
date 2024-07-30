@@ -7,7 +7,7 @@ import subprocess
 from dataclasses import dataclass, asdict
 
 LAMMPS_FORMAT = r"""
-boundary p p f
+boundary {boundary}
 units metal
 atom_style {atom_style}
 
@@ -60,6 +60,7 @@ class Params:
     x_displ: float = 0.0
     y_displ: float = 0.0
     minimize_params: str = ""
+    boundary: str = "p p f"
 
 @dataclass
 class Point:
@@ -144,6 +145,7 @@ if __name__ == "__main__":
         x_displ = data["x_displ"],
         y_displ = data["y_displ"],
         minimize_params = data["minimize_params"],
+        boundary = data["boundary"],
     )
 
     points, sizes = lammps_run(parameters)
