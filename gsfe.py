@@ -7,7 +7,7 @@ import subprocess
 from dataclasses import dataclass, asdict
 
 LAMMPS_FORMAT = r"""
-boundary {boundary}
+boundary p p p
 units metal
 atom_style {atom_style}
 
@@ -124,6 +124,7 @@ def compute_gsfe(points, sizes):
         point.p -= e0
         point.p /= sizes[0] * sizes[1]
         point.p *= eva2_to_jm2
+        point.p /= 2
     return points
 
 def print_points(points, f):
@@ -145,7 +146,6 @@ if __name__ == "__main__":
         x_displ = data["x_displ"],
         y_displ = data["y_displ"],
         minimize_params = data["minimize_params"],
-        boundary = data["boundary"],
     )
 
     points, sizes = lammps_run(parameters)
