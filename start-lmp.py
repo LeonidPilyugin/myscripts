@@ -22,8 +22,8 @@ if __name__ == "__main__":
     simulation_path.joinpath("log").mkdir()
     simulation_path.joinpath("trajectory").mkdir()
     simulation_path.joinpath("checkpoint").mkdir()
-    shutil.copy(input_file, simulation_path.joinpath("src").joinpath("script.lmp"))
-    shutil.copy(sys.argv[1], simulation_path.joinpath("descriptor.toml"))
+    shutil.copy(Path(input_file).expanduser(), simulation_path.joinpath("src").joinpath("script.lmp"))
+    shutil.copy(Path(sys.argv[1]).expanduser(), simulation_path.joinpath("descriptor.toml"))
 
     conda_env = data["environment"]
 
