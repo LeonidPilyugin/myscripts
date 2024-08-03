@@ -203,12 +203,12 @@ def process(params: Params):
 
 def print_parameters(param_list: list, f):
     first = param_list[0]
-    f.write("T,DT,P,DP,", end="")
+    f.write("T,DT,P,DP,")
     for i in range(len(first[0])):
-        f.write(f"P{i},", end="")
+        f.write(f"P{i},")
     f.write("\n")
     for param in param_list:
-        f.write(f"{param[1]},{param[2]},{param[3]},{param[4]},", end="")
+        f.write(f"{param[1]},{param[2]},{param[3]},{param[4]},")
         for p in param[0]:
             f.write(f"{p},")
         f.write("\n")
