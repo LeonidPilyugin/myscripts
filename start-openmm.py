@@ -29,7 +29,7 @@ if __name__ == "__main__":
     # start spmi
     settings = {
         "task": {
-            "id": f"simulation.{data["id"]}",
+            "id": f"simulation.{data['id']}",
             "comment": data["comment"],
             "backend": data["spmi"]["backend"],
             "wrapper": {
