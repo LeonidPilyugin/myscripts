@@ -132,7 +132,7 @@ def get_log():
 
 def start(script):
     pb = subprocess.Popen(
-        f"/usr/bin/env python3 run-lmp-daemon.py '{sys.argv[1]}'",
+        f"/usr/bin/env python3 {Path(__file__).parent.joinpath('run-lmp-daemon.py')} '{sys.argv[1]}'",
         shell=True,
     )
 
