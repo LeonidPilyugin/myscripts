@@ -27,7 +27,7 @@ log_dir = root.joinpath("logs")
 src_dir = root.joinpath("src")
 
 with open(root.joinpath("descriptor.toml"), 'rb') as f:
-    data = toml.load(f)["simulation"]["lammps"]
+    data = toml.load(f)["simulation"]
 
 data["macros"]["__ROOT"] = str(root)
 
