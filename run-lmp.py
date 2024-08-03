@@ -105,6 +105,8 @@ def modify_script(stage, checkpoint, steps):
 
                     output_file.write(f"timestep {stages[stage_name]['timestep']}\n")
 
+                    output_file.write(f"thermo {stages[stage_name]["thermo"]}\n")
+
                     if stage == stage_name:
                         output_file.write(f"run {steps}\n")
                     else:
