@@ -21,9 +21,9 @@ IGNORE = [
 ]
 
 root = Path(sys.argv[1])
-checkpoint_dir = root.joinpath("checkpoints")
+checkpoint_dir = root.joinpath("checkpoint")
 trajectory_dir = root.joinpath("trajectory")
-log_dir = root.joinpath("logs")
+log_dir = root.joinpath("log")
 src_dir = root.joinpath("src")
 
 with open(root.joinpath("descriptor.toml")) as f:
