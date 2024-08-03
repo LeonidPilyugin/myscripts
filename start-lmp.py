@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     # create directory
     assert not simulation_path.exists()
-    simulation_path.mkdir()
+    simulation_path.mkdir(parents=True)
     simulation_path.joinpath("src").mkdir()
     simulation_path.joinpath("log").mkdir()
     simulation_path.joinpath("trajectory").mkdir()
