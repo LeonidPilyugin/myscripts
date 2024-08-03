@@ -22,7 +22,7 @@ if __name__ == "__main__":
     simulation_path.joinpath("trajectory").mkdir()
     simulation_path.joinpath("checkpoint").mkdir()
     shutil.copy(sys.argv[1], simulation_path.joinpath("descriptor.toml"))
-    shutil.copy(data["configuration"], simulation_path.joinpath("srs").joinpath("configuration.atom"))
+    shutil.copy(data["configuration"], simulation_path.joinpath("src").joinpath("configuration.atom"))
 
     conda_env = data["environment"]
 
