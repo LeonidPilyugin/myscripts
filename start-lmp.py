@@ -35,7 +35,7 @@ if __name__ == "__main__":
             "backend": data["spmi"]["backend"],
             "wrapper": {
                 "type": "default",
-                "command": f"zsh -c 'source ~/.zshrc && conda activate {conda_env} && /usr/bin/env python3 run-lmp.py {simulation_path} && conda deactivate'",
+                "command": f"zsh -c 'source ~/.zshrc && conda activate {conda_env} && /usr/bin/env python3 {Path(__file__).parent.joinpath('run-lmp.py')} {simulation_path} && conda deactivate'",
                 "mixed_stdout": True,
             },
         }
