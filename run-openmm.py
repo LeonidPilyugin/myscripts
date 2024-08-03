@@ -25,6 +25,7 @@ class SimulationData:
         data = ovito.io.import_file(filename, sort_particles=True).compute()
 
         self.set_cell(data.cell[:, :3] * length_units)
+        print(data.particles.positions)
         self.set_pos(data.particles.positions[...] * length_units)
         self.set_vel(data.particles.velocities[...] * velocity_units)
 
