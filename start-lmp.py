@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # start spmi
     settings = {
         "task": {
-            "id": f"simulation.{data["id"]}",
+            "id": f"simulation.{data['id']}",
             "comment": data["comment"],
             "backend": data["spmi"]["backend"],
             "wrapper": {
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         with open(filename, "w") as f:
             toml.dump(settings, f)
         
-        assert os.system(f"zsh -c \'source ~/.zshrc && spmi load {filename} && spmi start simulation.{data['id']}\'") == 0
+        assert os.system(f"zsh -c 'source ~/.zshrc && spmi load {filename} && spmi start simulation.{data['id']}'") == 0
     finally:
         os.unlink(filename)
 
