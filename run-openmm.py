@@ -21,11 +21,11 @@ class SimulationData:
 
     def read_ovito(self, filename, length_units=unit.angstroms, time_units=unit.picoseconds, mass_units=unit.atom_mass_units):
         velocity_units = length_units / time_units
+        print("filename")
 
         data = ovito.io.import_file(filename, sort_particles=True).compute()
 
         self.set_cell(data.cell[:, :3] * length_units)
-        print(data.particles.positions)
         self.set_pos(data.particles.positions[...] * length_units)
         self.set_vel(data.particles.velocities[...] * velocity_units)
 
