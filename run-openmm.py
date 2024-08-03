@@ -21,7 +21,6 @@ class SimulationData:
 
     def read_ovito(self, filename, length_units=unit.angstroms, time_units=unit.picoseconds, mass_units=unit.atom_mass_units):
         velocity_units = length_units / time_units
-        print(filename)
 
         data = ovito.io.import_file(filename, sort_particles=True).compute()
 
@@ -333,7 +332,9 @@ if __name__ == "__main__":
 
     # load force
     with open(data["potential_path"], "r") as file_force:
-        force = openmm.XmlSerializer.deserialize(file_force.read())
+        ddd = file_force.read()
+        print(ddd)
+        force = openmm.XmlSerializer.deserialize(ddd)
     # add particles
     for i in range(simulation_data.count):
         force.addParticle([data["particle_types"][simulation_data.types[i]]])
