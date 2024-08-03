@@ -340,7 +340,7 @@ if __name__ == "__main__":
 
     types = simulation_data.types
 
-    simulation = simulation_data.make_simulation(data["platform_name"], data["platform_properties"])
+    simulation = simulation_data.make_simulation(data["platform"]["name"], data["platform"]["properties"])
     
     step = 0
     # load last checkpoint
