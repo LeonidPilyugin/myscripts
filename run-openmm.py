@@ -316,7 +316,7 @@ if __name__ == "__main__":
     log_dir = root.joinpath("logs")
     src_dir = root.joinpath("src")
 
-    with open(root.joinpath("descriptor.toml"), 'rb') as f:
+    with open(root.joinpath("descriptor.toml")) as f:
         data = toml.load(f)["simulation"]
     
     # init
