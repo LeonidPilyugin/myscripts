@@ -348,7 +348,7 @@ if __name__ == "__main__":
     step = 0
     # load last checkpoint
     if list(checkpoint_dir.iterdir()):
-        step = max([int(file.name) for file in checkpoint_dir.iterdir()])
+        step = max([int(file.stem) for file in checkpoint_dir.iterdir()])
         checkpoint = str(checkpoint_dir.joinpath(f"{step}.chp"))
         with open(checkpoint, "b+r") as f:
             simulation.context.loadCheckpoint(f.read())
