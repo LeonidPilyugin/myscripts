@@ -93,6 +93,7 @@ class SimulationData:
         else:
             assert hasattr(self, "masses")
             for mass in self.masses:
+                print(mass)
                 system.addParticle(mass)
 
         for force in self.forces:
