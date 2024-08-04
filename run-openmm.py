@@ -332,7 +332,7 @@ if __name__ == "__main__":
 
     # load forces
     for fp in data["potentials"]:
-        with open(data["potential_path"], "r") as file_force:
+        with open(fp, "r") as file_force:
             force = openmm.XmlSerializer.deserialize(file_force.read())
         # add particles
         for i in range(simulation_data.count):
