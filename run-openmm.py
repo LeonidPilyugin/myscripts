@@ -43,9 +43,9 @@ def load_lammps(file):
                 key = list(atoms.keys())[i]
                 val_ = None
                 try:
-                    val_ = float(val)
-                except Exception:
                     val_ = int(val)
+                except Exception:
+                    val_ = float(val)
                 atoms[key].append(val_)
 
         return atoms, box
