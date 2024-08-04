@@ -357,7 +357,7 @@ if __name__ == "__main__":
     thermo_file = root.joinpath("thermo.csv")
     if step == 0:
         with open(thermo_file, "w") as f:
-            f.write("step,u,t,P,T")
+            f.write("step,u,t,P,T\n")
 
     iter_steps = data["average_steps"] + data["skip_steps"]
     saved_checkpoints = 0
