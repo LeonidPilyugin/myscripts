@@ -28,5 +28,5 @@ if __name__ == "__main__":
     forces = system.getForces()
 
     for i, f in enumerate(forces):
-        save_force(f, ff_file.parent.joinpath(ff_file.name + str(i) + ".xml"))
+        save_force(f, ff_file.parent.joinpath(ff_file.stem + str(i) + ".xml"))
 
