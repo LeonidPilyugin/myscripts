@@ -6,14 +6,71 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import openmm
 import openmm.unit as unit
-import ovito.io
-import ovito.data
 import os
 import numpy as np
 import scipy
 import scipy.constants
 from tqdm import tqdm
 
+def load_lammps(file):
+    with open(file) as f:
+        # load number of particles
+        for _ in range(3):
+            f.readline()
+        n_atoms = int(f.readline())
+        f.readline()
+        
+        # load box
+        box_coords = []
+        for _ in range(3):
+            box_coords.append(list(map(float, f.readline().split())))
+        
+        box = np.array(
+            [
+                [box_coords[0][1] - box_coords[0][0], 0.0, 0.0],
+                [0.0, box_coords[1][1] - box_coords[1][0], 0.0],
+                [0.0, 0.0, box_coords[2][1] - box_coords[2][0]],
+            ]
+        )
+
+        atoms = dict.fromkeys(f.readline().strip("ITEM: ATOMS").split())
+        for k in atoms.keys():
+            atoms[k] = []
+
+        for line in f.readlines():
+            values = line.strip().split()
+            for i, val in enumerate(values):
+                key = list(atoms.keys())[i]
+                val_ = None
+                try:
+                    val_ = float(val)
+                except Exception:
+                    val_ = int(val)
+                atoms[key].append(val_)
+
+        return atoms, box
+
+
+def save_lammps(file, box, atoms, step):
+    with open(file, "w") as f:
+        f.write("ITEM: TIMESTEP\n")
+        f.write(f"{step}\n")
+        f.write("ITEM: NUMBER OF ATOMS\n")
+        f.write(f"{len(atoms['x'])}\n")
+        f.write("ITEM: BOX BOUNDS pp pp pp\n")
+        f.write(f"0.0 {box[0][0]}\n")
+        f.write(f"0.0 {box[1][1]}\n")
+        f.write(f"0.0 {box[2][2]}\n")
+        f.write("ITEM: ATOMS id ")
+        for key in atoms.keys():
+            f.write(f"{key} ")
+        f.write(f"\n")
+        
+        for i in range(len(atoms["x"])):
+            f.write(f"{i} ")
+            for key in atoms.keys():
+                f.write(f"{atoms[key][i]} ")
+            f.write("\n")
 
 class SimulationData:
     def __init__(self):
@@ -22,14 +79,14 @@ class SimulationData:
     def read_ovito(self, filename, length_units=unit.angstroms, time_units=unit.picoseconds, mass_units=unit.atom_mass_units):
         velocity_units = length_units / time_units
 
-        data = ovito.io.import_file(filename, sort_particles=True).compute()
+        atoms, box = load_lammps(filename)
 
-        self.set_cell(data.cell[:, :3] * length_units)
-        self.set_pos(data.particles.positions[...] * length_units)
-        self.set_vel(data.particles.velocities[...] * velocity_units)
+        self.set_cell(box * length_units)
+        self.set_pos(np.column_stack((atoms["x"], atoms["y"], atoms["z"])) * length_units)
+        self.set_vel(np.column_stack((atoms["vx"], atoms["vy"], atoms["vz"])) * velocity_units)
 
-        self.masses = data.particles.masses[...] * mass_units
-        self.types = data.particles.particle_types[...]
+        self.masses = atoms["mass"] * mass_units
+        self.types = atoms["type"]
 
     def set_cell(self, cell):
         self.cell = cell
@@ -271,45 +328,21 @@ def dump(therm,
     
     therm.write(f"{step},{u},{t},{P},{T}\n")
     therm.flush()
-    
-    data_collection = ovito.data.DataCollection()
-    
-    # get cell
-    data_cell = ovito.data.SimulationCell(pbc=(True, True, True))
-    data_cell[:, :3] = cell
 
-    # set cell
-    data_collection.objects.append(data_cell)
+    atoms = {
+        "type": types,
+        "x": positions[0,:],
+        "y": positions[1,:],
+        "z": positions[2,:],
+    }
 
-    # set positions, velocities and types
-    particles = ovito.data.Particles()
-    particles.create_property("Position", data=positions)
-    particles.create_property("Velocity", data=velocities)
-    particles.create_property("Particle Type", data=types)
-    
-    # add data to data object
-    data_collection.objects.append(particles)
-
-    # export
-    ovito.io.export_file(
-        data_collection,
+    save_lammps(
         atom_file,
-        "lammps/dump",
-        columns=[
-            "Particle Identifier",
-            "Particle Type",
-            "Position.X",
-            "Position.Y",
-            "Position.Z",
-            "Velocity.X",
-            "Velocity.Y",
-            "Velocity.Z",
-        ]
+        cell,
+        atoms,
+        step
     )
     
-    return data_collection
-    
-
 if __name__ == "__main__":
     root = Path(sys.argv[1])
     checkpoint_dir = root.joinpath("checkpoint")
