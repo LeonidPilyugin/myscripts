@@ -265,6 +265,7 @@ def dump(therm,
          step: int,
          cell,
          types,
+         atom_file,
     ):
     """Writes dumps of energies and positions"""
     
@@ -292,7 +293,7 @@ def dump(therm,
     # export
     ovito.io.export_file(
         data_collection,
-        data["trajectory_template"].format(i=step),
+        atom_file,
         "lammps/dump",
         columns=[
             "Particle Identifier",
@@ -366,7 +367,7 @@ if __name__ == "__main__":
         result = simulation.mean_next(data["average_steps"])
         u, t, P, T, p, v, s = result
         with open(thermo_file, "a") as f:
-            dump(f, p, v, u, t, P, T, i, s.getPeriodicBoxVectors(asNumpy=True).value_in_unit(openmm.unit.angstrom), types)
+            dump(f, p, v, u, t, P, T, i, s.getPeriodicBoxVectors(asNumpy=True).value_in_unit(openmm.unit.angstrom), types, str(trajectory_dir.joinpath(f"i.trj")))
         if data["skip_steps"] > 0:
             simulation.step(data["skip_steps"])
 
