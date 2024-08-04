@@ -330,15 +330,14 @@ if __name__ == "__main__":
     integrator = integrator_class(*data["integrator"]["arguments"])
     simulation_data.set_integrator(integrator)
 
-    # load force
-    with open(data["potential_path"], "r") as file_force:
-        ddd = file_force.read()
-        print(ddd)
-        force = openmm.XmlSerializer.deserialize(ddd)
-    # add particles
-    for i in range(simulation_data.count):
-        force.addParticle([data["particle_types"][simulation_data.types[i]]])
-    simulation_data.add_force(force)
+    # load forces
+    for fp in data["potentials"]:
+        with open(data["potential_path"], "r") as file_force:
+            force = openmm.XmlSerializer.deserialize(file_force.read())
+        # add particles
+        for i in range(simulation_data.count):
+            force.addParticle([data["particle_types"][simulation_data.types[i]]])
+        simulation_data.add_force(force)
 
     types = simulation_data.types
 
