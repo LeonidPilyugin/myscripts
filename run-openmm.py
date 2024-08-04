@@ -229,7 +229,7 @@ class Simulation:
             
             N_ = len(p)
             
-            T_ = (self.masses * np.sum(v.value_in_unit(unit.meter / unit.second) ** 2, axis=1)).sum() / scipy.constants.k / N_ / 3
+            T_ = (self.masses * np.sum(v.value_in_unit(unit.meter / unit.second) ** 2, axis=1)).sum() / scipy.constants.k / N_ / 3 * 2
             T += T_
             
             V_ = state.getPeriodicBoxVolume().value_in_unit(unit.meter ** 3)
