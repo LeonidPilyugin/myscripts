@@ -367,7 +367,7 @@ if __name__ == "__main__":
         result = simulation.mean_next(data["average_steps"])
         u, t, P, T, p, v, s = result
         with open(thermo_file, "a") as f:
-            dump(f, p, v, u, t, P, T, i, s.getPeriodicBoxVectors(asNumpy=True).value_in_unit(openmm.unit.angstrom), types, str(trajectory_dir.joinpath(f"i.trj")))
+            dump(f, p, v, u, t, P, T, i, s.getPeriodicBoxVectors(asNumpy=True).value_in_unit(openmm.unit.angstrom), types, str(trajectory_dir.joinpath(f"{i}.trj")))
         if data["skip_steps"] > 0:
             simulation.step(data["skip_steps"])
 
