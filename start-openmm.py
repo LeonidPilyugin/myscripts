@@ -4,6 +4,7 @@ import os
 import sys
 import toml
 import shutil
+import subprocess
 from pathlib import Path
 
 HOME = Path(os.environ.get("SIMULATIONS_HOME", Path.home().joinpath("simulations"))).expanduser()
@@ -11,6 +12,8 @@ HOME = Path(os.environ.get("SIMULATIONS_HOME", Path.home().joinpath("simulations
 if __name__ == "__main__":
     with open(sys.argv[1]) as f:
         data = toml.load(f)["simulation"]
+
+    data["platform"]["properties"]["DeviceIndex"] = subprocess.getoutput("select-gpu.py").strip()
     simulation_id = data["id"]
     simulation_path = HOME.joinpath(*simulation_id.split("."))
 
