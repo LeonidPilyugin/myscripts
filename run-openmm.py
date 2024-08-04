@@ -93,7 +93,6 @@ class SimulationData:
         else:
             assert hasattr(self, "masses")
             for mass in self.masses:
-                print(mass)
                 system.addParticle(mass)
 
         for force in self.forces:
@@ -312,9 +311,9 @@ def dump(therm,
 
 if __name__ == "__main__":
     root = Path(sys.argv[1])
-    checkpoint_dir = root.joinpath("checkpoints")
+    checkpoint_dir = root.joinpath("checkpoint")
     trajectory_dir = root.joinpath("trajectory")
-    log_dir = root.joinpath("logs")
+    log_dir = root.joinpath("log")
     src_dir = root.joinpath("src")
 
     with open(root.joinpath("descriptor.toml")) as f:
