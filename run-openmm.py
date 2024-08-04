@@ -342,8 +342,6 @@ if __name__ == "__main__":
 
     types = simulation_data.types
 
-    print(simulation_data.particles)
-
     simulation = simulation_data.make_simulation(data["platform"]["name"], data["platform"]["properties"])
     
     step = 0
