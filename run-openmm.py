@@ -331,9 +331,9 @@ def dump(therm,
 
     atoms = {
         "type": types,
-        "x": positions[0,:],
-        "y": positions[1,:],
-        "z": positions[2,:],
+        "x": positions[:,0],
+        "y": positions[:,1],
+        "z": positions[:,2],
     }
 
     save_lammps(
