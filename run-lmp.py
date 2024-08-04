@@ -18,6 +18,7 @@ IGNORE = [
     "thermo_modify",
     "pair_style",
     "pair_coeff",
+    "kspace_style",
 ]
 
 root = Path(sys.argv[1])
