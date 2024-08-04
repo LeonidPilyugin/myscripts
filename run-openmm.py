@@ -337,7 +337,7 @@ if __name__ == "__main__":
         # add particles
         for i in range(simulation_data.count):
             print(data["particle_types"])
-            force.addParticle([data["particle_types"][simulation_data.types[i]]])
+            force.addParticle([data["particle_types"][str(simulation_data.types[i])]])
         simulation_data.add_force(force)
 
     types = simulation_data.types
