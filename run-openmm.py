@@ -336,6 +336,7 @@ if __name__ == "__main__":
             force = openmm.XmlSerializer.deserialize(file_force.read())
         # add particles
         for i in range(simulation_data.count):
+            print(help(force.addParticle))
             print(force_data["particles"][str(simulation_data.types[i])])
             force.addParticle(**force_data["particles"][str(simulation_data.types[i])])
         simulation_data.add_force(force)
