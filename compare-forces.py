@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import math
 from pathlib import Path
 import numpy as np
 
@@ -35,7 +36,7 @@ if __name__ == "__main__":
 
     delta = forces[0] - forces[1]
     delta /= forces[0]
-    total = [ np.hypot(*d) for d in delta ]
-    print(max(total))
-    print(np.mean(total))
+    total = [ math.hypot(*d) for d in delta ]
+    print(f"Max reliative error: {max(total)}")
+    print(f"Mean reliative error: {np.mean(total)}")
 
