@@ -5,7 +5,7 @@ import math
 from pathlib import Path
 import numpy as np
 
-KJ_NM_TO_EV_A = 1.0367955273190636e-05
+KJ_NM_TO_EV_A = 0.0010367955273190637
 
 def load_csv(file):
     res = []
