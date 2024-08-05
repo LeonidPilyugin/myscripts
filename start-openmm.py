@@ -13,7 +13,8 @@ if __name__ == "__main__":
     with open(sys.argv[1]) as f:
         data = toml.load(f)["simulation"]
 
-    data["platform"]["properties"]["DeviceIndex"] = subprocess.getoutput("select-gpu.py").strip()
+    if not "DeviceIndex" in data["platform"]["properties"]:
+        data["platform"]["properties"]["DeviceIndex"] = subprocess.getoutput("select-gpu.py").strip()
     simulation_id = data["id"]
     simulation_path = HOME.joinpath(*simulation_id.split("."))
 
