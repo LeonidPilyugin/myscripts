@@ -394,8 +394,6 @@ if __name__ == "__main__":
         with open(checkpoint, "b+r") as f:
             simulation.context.loadCheckpoint(f.read())
 
-    print(step)
-    
     # create thermo file
     thermo_file = root.joinpath("thermo.csv")
     if step == 0:
@@ -406,7 +404,7 @@ if __name__ == "__main__":
     saved_checkpoints = 0
 
     # simulate
-    for i in tqdm(range(step, data["steps"] + step, iter_steps)):
+    for i in tqdm(range(step, data["steps"], iter_steps)):
         result = simulation.mean_next(data["average_steps"])
         u, t, P, T, p, v, s = result
         with open(thermo_file, "a") as f:
