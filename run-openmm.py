@@ -393,6 +393,8 @@ if __name__ == "__main__":
         checkpoint = str(checkpoint_dir.joinpath(f"{step}.chp"))
         with open(checkpoint, "b+r") as f:
             simulation.context.loadCheckpoint(f.read())
+
+    print(step)
     
     # create thermo file
     thermo_file = root.joinpath("thermo.csv")
