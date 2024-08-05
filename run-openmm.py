@@ -377,6 +377,14 @@ if __name__ == "__main__":
     types = simulation_data.types
 
     simulation = simulation_data.make_simulation(data["platform"]["name"], data["platform"]["properties"])
+
+    # compute forces on zero step
+    forces = simulation.get_state().getForces(asNumpy=True).value_in_unit(unit.elementary_charge * unit.volt / unit.angstrom)
+    with open(root.joinpath("forces.csv"), "w") as f:
+        f.write("id,force\n")
+        for i, force in enumerate(forces):
+            f.write(f"{i},{force}\n")
+
     
     step = 0
     # load last checkpoint
