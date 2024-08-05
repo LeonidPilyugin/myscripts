@@ -5,15 +5,13 @@ import math
 from pathlib import Path
 import numpy as np
 
-KJ_NM_TO_EV_A = 0.0010367955273190637
-
 def load_csv(file):
     res = []
     with open(file) as f:
         for line in f.readlines()[1:]:
             res.append(list(map(float, line.split(",")[1:])))
 
-    return np.array(res) * KJ_NM_TO_EV_A
+    return np.array(res)
 
 def load_lammps(file):
     res = []
