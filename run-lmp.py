@@ -86,7 +86,7 @@ def modify_script(stage, checkpoint, steps):
                 output_file.write(line)
                 continue
             stage_name = stage_names[stage_n]
-            if not line.strip().split() or line.strip().split()[0] != "run":
+            if not line.strip().split() or line.strip() != "run __RUN":
                 line = line.replace("__MEAN", str(stages[stage_name]["mean"]))
                 line = line.replace("__DUMP_EVERY", str(stages[stage_name]["dump"]))
                 line = line.replace("__DUMP_PATH", str(trajectory_dir.joinpath(stage_name)) + "/*.trj")
