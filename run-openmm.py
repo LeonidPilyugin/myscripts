@@ -379,7 +379,7 @@ if __name__ == "__main__":
     simulation = simulation_data.make_simulation(data["platform"]["name"], data["platform"]["properties"])
 
     # compute forces on zero step
-    forces = simulation.get_state().getForces(asNumpy=True).value_in_unit(unit.ev / unit.angstrom / unit.mole) * 6.02214076e23
+    forces = simulation.get_state().getForces(asNumpy=True).value_in_unit(unit.ev / unit.angstrom / unit.mole) / 6.02214076e23
     with open(root.joinpath("forces.csv"), "w") as f:
         f.write("id,fx,fy,fz\n")
         for i, force in enumerate(forces):
