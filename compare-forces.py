@@ -35,6 +35,7 @@ if __name__ == "__main__":
 
     delta = forces[0] - forces[1]
     delta /= forces[0]
-    print(np.max(np.abs(delta)))
-    print(np.mean(np.abs(delta)))
+    total = [ np.hypot(*d) for d in delta ]
+    print(max(total))
+    print(np.mean(total))
 
