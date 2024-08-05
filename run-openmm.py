@@ -380,6 +380,7 @@ if __name__ == "__main__":
 
     # compute forces on zero step
     forces = simulation.get_state().getForces(asNumpy=True).value_in_unit(unit.kilojoule_per_mole / unit.nanometer)
+    print(simulation.get_state().getForces(asNumpy=True))
     with open(root.joinpath("forces.csv"), "w") as f:
         f.write("id,fx,fy,fz\n")
         for i, force in enumerate(forces):
