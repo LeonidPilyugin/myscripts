@@ -11,6 +11,7 @@ import numpy as np
 import scipy
 import scipy.constants
 from tqdm import tqdm
+import importlib.util
 
 def load_lammps(file):
     with open(file) as f:
@@ -286,7 +287,7 @@ class Simulation:
             
             N_ = len(p)
             
-            T_ = (self.masses * np.sum(v.value_in_unit(unit.meter / unit.second) ** 2, axis=1)).sum() / scipy.constants.k / N_ / 3 * 2
+            T_ = (self.masses * np.sum(v.value_in_unit(unit.meter / unit.second) ** 2, axis=1)).sum() / scipy.constants.k / N_ / 3
             T += T_
             
             V_ = state.getPeriodicBoxVolume().value_in_unit(unit.meter ** 3)
@@ -403,9 +404,20 @@ if __name__ == "__main__":
     iter_steps = data["average_steps"] + data["skip_steps"]
     saved_checkpoints = 0
 
+    # load add-ons
+    add_ons = []
+    for file in sorted(list(src_dir.joinpath("scripts").iterdir()), key=lambda x: int(x.name.split(".")[0])):
+        spec = importlib.util.spec_from_file_location(file.name, file)
+        foo = importlib.util.module_from_spec(spec)
+        sys.modules[file.name] = foo
+        spec.loader.exec_module(foo)
+        add_ons.append(foo.main)
+
     # simulate
     for i in tqdm(range(step, data["steps"], iter_steps)):
         result = simulation.mean_next(data["average_steps"])
+        for add_on in add_ons:
+            simulation, result = add_on(simulation, result)
         u, t, P, T, p, v, s = result
         with open(thermo_file, "a") as f:
             dump(f, p, v, u, t, P, T, i, s.getPeriodicBoxVectors(asNumpy=True).value_in_unit(openmm.unit.angstrom), types, str(trajectory_dir.joinpath(f"{i}.trj")))

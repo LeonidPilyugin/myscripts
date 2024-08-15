@@ -22,11 +22,15 @@ if __name__ == "__main__":
     assert not simulation_path.exists()
     simulation_path.mkdir(parents=True)
     simulation_path.joinpath("src").mkdir()
+    simulation_path.joinpath("scripts").mkdir()
     simulation_path.joinpath("log").mkdir()
     simulation_path.joinpath("trajectory").mkdir()
     simulation_path.joinpath("checkpoint").mkdir()
     shutil.copy(sys.argv[1], simulation_path.joinpath("descriptor.toml"))
     shutil.copy(data["configuration"], simulation_path.joinpath("src").joinpath("configuration.atom"))
+
+    for i in range(len(data["add-ons"])):
+        shutil.copy(data["add-ons"], simulation_path.joinpath("scripts").joinpath(f"{i}." + Path(data["add-ons"]).name))
 
     conda_env = data["environment"]
 
