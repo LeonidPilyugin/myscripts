@@ -29,8 +29,8 @@ if __name__ == "__main__":
     shutil.copy(sys.argv[1], simulation_path.joinpath("descriptor.toml"))
     shutil.copy(data["configuration"], simulation_path.joinpath("src").joinpath("configuration.atom"))
 
-    for i in range(len(data["add-ons"])):
-        shutil.copy(data["add-ons"], simulation_path.joinpath("scripts").joinpath(f"{i}." + Path(data["add-ons"]).name))
+    for i in range(len(data["add_ons"])):
+        shutil.copy(data["add_ons"][i], simulation_path.joinpath("scripts").joinpath(f"{i}." + Path(data["add_ons"][i]).name))
 
     conda_env = data["environment"]
 
