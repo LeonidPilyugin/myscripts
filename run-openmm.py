@@ -406,7 +406,7 @@ if __name__ == "__main__":
 
     # load add-ons
     add_ons = []
-    for file in sorted(list(src_dir.joinpath("scripts").iterdir()), key=lambda x: int(x.name.split(".")[0])):
+    for file in sorted(list(root.joinpath("scripts").iterdir()), key=lambda x: int(x.name.split(".")[0])):
         spec = importlib.util.spec_from_file_location(file.name, file)
         foo = importlib.util.module_from_spec(spec)
         sys.modules[file.name] = foo
