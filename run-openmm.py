@@ -329,7 +329,7 @@ def dump(therm,
     
     therm.write(f"{step},{u},{t},{P},{T}\n")
     therm.flush()
-    print(positions.shape)
+    print(positions[:,0].shape)
 
     atoms = {
         "type": types,
