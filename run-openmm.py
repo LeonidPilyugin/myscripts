@@ -416,8 +416,6 @@ if __name__ == "__main__":
     # simulate
     for i in tqdm(range(step, data["steps"], iter_steps)):
         result = simulation.mean_next(data["average_steps"])
-        for add_on in add_ons:
-            simulation, result = add_on(simulation, result, data)
         u, t, P, T, p, v, s = result
         with open(thermo_file, "a") as f:
             dump(f, p, v, u, t, P, T, i, s.getPeriodicBoxVectors(asNumpy=True).value_in_unit(openmm.unit.angstrom), types, str(trajectory_dir.joinpath(f"{i}.trj")))
@@ -429,6 +427,8 @@ if __name__ == "__main__":
             with open(checkpoint_dir.joinpath(f"{i + iter_steps}.chp"), "wb") as ff:
                 ff.write(simulation.context.createCheckpoint())
             saved_checkpoints += 1
+        for add_on in add_ons:
+            simulation, result = add_on(i + iter_steps, simulation, result, data)
 
     with open(checkpoint_dir.joinpath("last.chp"), "wb") as ff:
         ff.write(simulation.context.createCheckpoint())
