@@ -417,7 +417,7 @@ if __name__ == "__main__":
     for i in tqdm(range(step, data["steps"], iter_steps)):
         result = simulation.mean_next(data["average_steps"])
         for add_on in add_ons:
-            simulation, result = add_on(simulation, result)
+            simulation, result = add_on(simulation, result, data)
         u, t, P, T, p, v, s = result
         with open(thermo_file, "a") as f:
             dump(f, p, v, u, t, P, T, i, s.getPeriodicBoxVectors(asNumpy=True).value_in_unit(openmm.unit.angstrom), types, str(trajectory_dir.joinpath(f"{i}.trj")))
