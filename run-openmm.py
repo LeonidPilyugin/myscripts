@@ -329,7 +329,6 @@ def dump(therm,
     
     therm.write(f"{step},{u},{t},{P},{T}\n")
     therm.flush()
-    print(positions[:,0].shape)
 
     atoms = {
         "type": types,
@@ -429,7 +428,7 @@ if __name__ == "__main__":
                 ff.write(simulation.context.createCheckpoint())
             saved_checkpoints += 1
         for add_on in add_ons:
-            simulation, result = add_on(i + iter_steps, simulation, result, data)
+            simulation, result = add_on(i + iter_steps, simulation, result, data, types)
 
     with open(checkpoint_dir.joinpath("last.chp"), "wb") as ff:
         ff.write(simulation.context.createCheckpoint())
