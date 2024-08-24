@@ -224,7 +224,7 @@ class Simulation:
             f.write(f"{step},{u+t},{u},{t},{T}\n")
             f.flush()
 
-        IO.dump_frame(self.frame)
+        IO.dump_frame(self.frame, trj_file)
 
 if __name__ == "__main__":
     root = Path(sys.argv[1])
