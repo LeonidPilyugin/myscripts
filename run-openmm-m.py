@@ -26,7 +26,7 @@ class SimulationData:
     def load(self, filename):
         self.frame = IO.load_frame(filename)
 
-        self.set_cell(np.asarray(self.frame.box.get_arr()).reshape((3, 3)) * LENGTH_UNITS)
+        self.set_cell(np.asarray(self.frame.box.get_edge().get_arr()).reshape((3, 3)) * LENGTH_UNITS)
 
         self.set_pos(np.column_stack(
             (
