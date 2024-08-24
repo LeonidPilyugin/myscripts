@@ -36,7 +36,7 @@ class SimulationData:
             )
         ) * LENGTH_UNITS)
 
-        self.set_pos(np.column_stack(
+        self.set_vel(np.column_stack(
             (
                 np.asarray(self.frame.atoms.get_prop("vx").get_arr()),
                 np.asarray(self.frame.atoms.get_prop("vy").get_arr()),
