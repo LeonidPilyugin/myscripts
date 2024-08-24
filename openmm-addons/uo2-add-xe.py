@@ -71,7 +71,8 @@ def main(step, simulation, data):
     vy = velocities[:,1].tolist()
     vz = velocities[:,2].tolist()
 
-    print([m.value_in_unit(unit.atom_mass_units) for m in masses])
+    print(len(masses))
+    print(len(x))
 
     simulation.update_frame(
         n=len(x),
