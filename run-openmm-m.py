@@ -44,8 +44,8 @@ class SimulationData:
             )
         ) * VELOCITY_UNITS)
 
-        self.masses = np.asarray(self.frame.atoms.get_prop("mass")) * MASS_UNITS
-        self.types = np.asarray(self.frame.atoms.get_prop("type"))
+        self.masses = np.asarray(self.frame.atoms.get_prop("mass").get_arr()) * MASS_UNITS
+        self.types = np.asarray(self.frame.atoms.get_prop("type").get_arr())
 
     def set_cell(self, cell):
         self.cell = cell
