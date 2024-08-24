@@ -107,7 +107,6 @@ class SimulationData:
             context.setVelocitiesToTemperature(self.temperature)
 
         simulation = Simulation(context, self.integrator, self.frame)
-        self.set_tainted(True)
         return simulation
 
 
