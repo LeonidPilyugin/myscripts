@@ -150,7 +150,8 @@ class Simulation:
 
         for _ in range(steps):
             # run 1 step
-            state = self.integrator.step(1)
+            self.integrator.step(1)
+            state = self.get_state()
             p = state.getPositions(asNumpy=True)
             v = state.getVelocities(asNumpy=True)
             # add parameters to created variables
