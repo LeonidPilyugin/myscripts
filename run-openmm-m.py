@@ -216,9 +216,9 @@ class Simulation:
         self.frame.atoms.set_prop("type", props["type"])
         
     def dump(self, step, thermo_file, trj_file):
-        u = self.frame.get_prop("u")
-        t = self.frame.get_prop("t")
-        T = self.frame.get_prop("T")
+        u = self.frame.get_prop("u").data
+        t = self.frame.get_prop("t").data
+        T = self.frame.get_prop("T").data
 
         with open(thermo_file, "a") as f:
             f.write(f"{step},{u+t},{u},{t},{T}\n")
