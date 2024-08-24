@@ -14,7 +14,7 @@ def main(step, simulation, data):
     if step - last_inserted < data["insert_xe_every"]:
         return
 
-    state = simulation.getState(True, True, True, True)
+    state = simulation.get_state()
     system = simulation.context.getSystem()
 
     n = system.getNumParticles()
