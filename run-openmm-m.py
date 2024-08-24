@@ -26,26 +26,26 @@ class SimulationData:
     def load(self, filename):
         self.frame = IO.load_frame(filename)
 
-        self.set_cell(np.asarray(frame.box.get_arr()).reshape((3, 3)) * LENGTH_UNITS)
+        self.set_cell(np.asarray(self.frame.box.get_arr()).reshape((3, 3)) * LENGTH_UNITS)
 
         self.set_pos(np.column_stack(
             (
-                np.asarray(frame.atoms.get_prop("x").get_arr()),
-                np.asarray(frame.atoms.get_prop("y").get_arr()),
-                np.asarray(frame.atoms.get_prop("z").get_arr()),
+                np.asarray(self.frame.atoms.get_prop("x").get_arr()),
+                np.asarray(self.frame.atoms.get_prop("y").get_arr()),
+                np.asarray(self.frame.atoms.get_prop("z").get_arr()),
             )
         ) * LENGTH_UNITS)
 
         self.set_pos(np.column_stack(
             (
-                np.asarray(frame.atoms.get_prop("vx").get_arr()),
-                np.asarray(frame.atoms.get_prop("vy").get_arr()),
-                np.asarray(frame.atoms.get_prop("vz").get_arr()),
+                np.asarray(self.frame.atoms.get_prop("vx").get_arr()),
+                np.asarray(self.frame.atoms.get_prop("vy").get_arr()),
+                np.asarray(self.frame.atoms.get_prop("vz").get_arr()),
             )
         ) * VELOCITY_UNITS)
 
-        self.masses = np.asarray(frame.atoms.get_prop("mass")) * MASS_UNITS
-        self.types = np.asarray(frame.atoms.get_prop("type"))
+        self.masses = np.asarray(self.frame.atoms.get_prop("mass")) * MASS_UNITS
+        self.types = np.asarray(self.frame.atoms.get_prop("type"))
 
     def set_cell(self, cell):
         self.cell = cell
