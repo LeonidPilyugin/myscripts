@@ -193,17 +193,15 @@ class Simulation:
         vz = velocities[:,2].tolist()
 
         self.update_frame(
-            {
-                "n": len(x),
-                "x": Aml.DoublePerAtomProperty.from_array(x),
-                "y": Aml.DoublePerAtomProperty.from_array(y),
-                "z": Aml.DoublePerAtomProperty.from_array(z),
-                "vx": Aml.DoublePerAtomProperty.from_array(vx),
-                "vy": Aml.DoublePerAtomProperty.from_array(vy),
-                "vz": Aml.DoublePerAtomProperty.from_array(vz),
-                "mass": self.frame.atoms.get_prop("mass"),
-                "type": self.frame.atoms.get_prop("type"),
-            }
+            n=len(x),
+            x=Aml.DoublePerAtomProperty.from_array(x),
+            y=Aml.DoublePerAtomProperty.from_array(y),
+            z=Aml.DoublePerAtomProperty.from_array(z),
+            vx=Aml.DoublePerAtomProperty.from_array(vx),
+            vy=Aml.DoublePerAtomProperty.from_array(vy),
+            vz=Aml.DoublePerAtomProperty.from_array(vz),
+            mass=self.frame.atoms.get_prop("mass"),
+            type=self.frame.atoms.get_prop("type"),
         )
 
     def update_frame(**props):
