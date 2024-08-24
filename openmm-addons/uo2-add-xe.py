@@ -72,7 +72,13 @@ def main(step, simulation, data):
     vz = velocities[:,2].tolist()
 
     print(len(masses))
+    print(len(types))
     print(len(x))
+    print(len(y))
+    print(len(z))
+    print(len(vx))
+    print(len(vy))
+    print(len(vz))
 
     simulation.update_frame(
         n=len(x),
