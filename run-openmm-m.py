@@ -204,7 +204,7 @@ class Simulation:
             type=self.frame.atoms.get_prop("type"),
         )
 
-    def update_frame(**props):
+    def update_frame(*args, **props):
         self.frame.atoms = Aml.Atoms.sized(props["n"])
         self.frame.atoms.set_prop("x", props["x"])
         self.frame.atoms.set_prop("y", props["y"])
