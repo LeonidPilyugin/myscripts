@@ -79,6 +79,6 @@ def main(step, simulation, data):
         vx=Aml.DoublePerAtomProperty.from_array(vx),
         vy=Aml.DoublePerAtomProperty.from_array(vy),
         vz=Aml.DoublePerAtomProperty.from_array(vz),
-        mass=Aml.DoublePerAtomProperty.from_array(masses),
+        mass=Aml.DoublePerAtomProperty.from_array([m.value_in_unit(unit.atom_mass_units) for m in masses]),
         type=Aml.IntPerAtomProperty.from_array(types),
     )
