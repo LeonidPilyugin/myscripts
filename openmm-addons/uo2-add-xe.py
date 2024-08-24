@@ -71,6 +71,8 @@ def main(step, simulation, data):
     vy = velocities[:,1].tolist()
     vz = velocities[:,2].tolist()
 
+    print(masses)
+
     simulation.update_frame(
         n=len(x),
         x=Aml.DoublePerAtomProperty.from_array(x),
