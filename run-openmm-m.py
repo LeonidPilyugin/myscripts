@@ -204,7 +204,7 @@ class Simulation:
             type=self.frame.atoms.get_prop("type"),
         )
 
-    def update_frame(*args, **props):
+    def update_frame(self, *args, **props):
         self.frame.atoms = Aml.Atoms.sized(props["n"])
         self.frame.atoms.set_prop("x", props["x"])
         self.frame.atoms.set_prop("y", props["y"])
@@ -215,7 +215,7 @@ class Simulation:
         self.frame.atoms.set_prop("mass", props["mass"])
         self.frame.atoms.set_prop("type", props["type"])
         
-    def dump(step, thermo_file, trj_file):
+    def dump(self, step, thermo_file, trj_file):
         u = self.frame.get_prop("u")
         t = self.frame.get_prop("t")
         T = self.frame.get_prop("T")
