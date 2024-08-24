@@ -59,8 +59,12 @@ def main(step, simulation, data):
     simulation.context.reinitialize()
     positions = state.getPositions(asNumpy=True)
     velocities = state.getVelocities(asNumpy=True)
-    simulation.context.setPositions(np.vstack([positions, com]))
-    simulation.context.setVelocities(np.vstack([velocities, vel]))
+
+    positions = np.vstack([positions, com])
+    velocities = np.vstack([velocities, vel])
+
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
     types = simulation.frame.atoms.get_prop("type").get_arr()
     types.append(3)
 
@@ -70,15 +74,6 @@ def main(step, simulation, data):
     vx = velocities[:,0].tolist()
     vy = velocities[:,1].tolist()
     vz = velocities[:,2].tolist()
-
-    print(len(masses))
-    print(len(types))
-    print(len(x))
-    print(len(y))
-    print(len(z))
-    print(len(vx))
-    print(len(vy))
-    print(len(vz))
 
     simulation.update_frame(
         n=len(x),
