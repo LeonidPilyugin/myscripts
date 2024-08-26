@@ -48,6 +48,7 @@ def main(step, simulation, data):
     simulation.context.reinitialize()
     simulation.context.setPositions(np.vstack([positions, com]))
     simulation.context.setVelocities(np.vstack([velocities, vel]))
+    simulation.context.reinitialize()
     simulation.integrator = simulation.context.getIntegrator()
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
@@ -56,15 +57,10 @@ def main(step, simulation, data):
     for i in range(n):
         system.setParticleMass(i, masses[i])
     last_inserted = step
-    simulation.context.reinitialize()
+
     positions = state.getPositions(asNumpy=True)
     velocities = state.getVelocities(asNumpy=True)
 
-    positions = np.vstack([positions, com])
-    velocities = np.vstack([velocities, vel])
-
-    simulation.context.setPositions(positions)
-    simulation.context.setVelocities(velocities)
     types = simulation.frame.atoms.get_prop("type").get_arr()
     types.append(3)
 
