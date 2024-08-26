@@ -74,6 +74,7 @@ def main(step, simulation, data):
         system.setParticleMass(i, masses[i])
     last_inserted = step
 
+    state = simulation.get_state()
     positions = state.getPositions(asNumpy=True)
     velocities = state.getVelocities(asNumpy=True)
 
