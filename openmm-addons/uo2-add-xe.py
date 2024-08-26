@@ -41,17 +41,16 @@ def main(step, simulation, data):
     # insert Xe
     system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
-    forces = []
+
     for i in range(len(system.getForces())):
         force = system.getForce(i)
+        print(force.getNumExclusions())
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
-        forces.append(force)
 
-    for i in range(len(forces)):
-        system.removeForce(0)
-    for f in forces:
-        system.addForce(f)
+    for i in range(len(system.getForces())):
+        force = system.getForce(i)
+        print(force.getNumExclusions())
 
     simulation.context.reinitialize()
     simulation.context.setPositions(np.vstack([positions, com]))
