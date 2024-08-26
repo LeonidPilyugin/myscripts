@@ -67,6 +67,7 @@ def main(step, simulation, data):
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
+    print(len(positions), "\n")
 
     # set masses
     for i in range(n):
