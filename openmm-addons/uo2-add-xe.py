@@ -54,12 +54,17 @@ def main(step, simulation, data):
     print(len(positions))
 
     simulation.context.reinitialize()
+    print(len(positions))
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
+    print(len(positions))
     simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
     simulation.integrator = simulation.context.getIntegrator()
+
+    print("\n")
+
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
 
