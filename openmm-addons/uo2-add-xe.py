@@ -47,11 +47,12 @@ def main(step, simulation, data):
         print(force.getNumParticles())
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
-        print(force.getNumParticles())
+            print(force.getNumParticles())
 
     for i in range(len(system.getForces())):
         force = system.getForce(i)
-        print(force.getNumParticles())
+        if hasattr(force, "addParticle"):
+            print(force.getNumParticles())
 
     simulation.context.reinitialize()
     simulation.context.setPositions(np.vstack([positions, com]))
