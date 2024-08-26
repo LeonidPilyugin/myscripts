@@ -1,10 +1,7 @@
-import sys
-import scipy
 import numpy as np
 import openmm
 from openmm.openmm import LocalEnergyMinimizer
 from openmm import unit
-import time
 from gi.repository import Aml
 
 last_inserted = 0
@@ -51,23 +48,16 @@ def main(step, simulation, data):
     positions = np.vstack([positions, com])
     velocities = np.vstack([velocities, vel])
 
-    print(len(positions))
-
     simulation.context.reinitialize()
-    print(len(positions))
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
-    print(len(positions))
     simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
     simulation.integrator = simulation.context.getIntegrator()
 
-    print("\n")
-
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
-    print(len(positions), "\n")
 
     # set masses
     for i in range(n):
@@ -87,11 +77,6 @@ def main(step, simulation, data):
     vx = velocities[:,0].tolist()
     vy = velocities[:,1].tolist()
     vz = velocities[:,2].tolist()
-
-    print(len(x))
-    print(len(vx))
-    print(len(types))
-    print(len(masses))
 
     simulation.update_frame(
         n=len(x),
