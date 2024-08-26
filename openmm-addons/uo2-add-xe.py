@@ -44,8 +44,8 @@ def main(step, simulation, data):
 
     for i in range(len(system.getForces())):
         force = system.getForce(i)
-        print(force.getNumParticles())
         if hasattr(force, "addParticle"):
+            print(force.getNumParticles())
             force.addParticle(*data["potentials"][i]["particles"]["3"])
             print(force.getNumParticles())
 
