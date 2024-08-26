@@ -38,6 +38,7 @@ def main(step, simulation, data):
     for i in xenons:
         com += positions[i]
     com /= len(xenons)
+
     # insert Xe
     system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
@@ -45,12 +46,13 @@ def main(step, simulation, data):
     for i in range(len(system.getForces())):
         force = system.getForce(i)
         if hasattr(force, "addParticle"):
-            print(force.getNumParticles())
             force.addParticle(*data["potentials"][i]["particles"]["3"])
-            print(force.getNumParticles())
 
     positions = np.vstack([positions, com])
     velocities = np.vstack([velocities, vel])
+
+    print(len(positions))
+
     simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
