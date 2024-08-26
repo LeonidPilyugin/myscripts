@@ -49,12 +49,14 @@ def main(step, simulation, data):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
             print(force.getNumParticles())
 
+    positions = np.vstack([positions, com])
+    velocities = np.vstack([velocities, vel])
     simulation.context.reinitialize()
-    simulation.context.setPositions(np.vstack([positions, com]))
-    simulation.context.setVelocities(np.vstack([velocities, vel]))
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
     simulation.context.reinitialize()
-    simulation.context.setPositions(np.vstack([positions, com]))
-    simulation.context.setVelocities(np.vstack([velocities, vel]))
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
     simulation.integrator = simulation.context.getIntegrator()
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
@@ -76,6 +78,11 @@ def main(step, simulation, data):
     vx = velocities[:,0].tolist()
     vy = velocities[:,1].tolist()
     vz = velocities[:,2].tolist()
+
+    print(len(x))
+    print(len(vx))
+    print(len(types))
+    print(len(masses))
 
     simulation.update_frame(
         n=len(x),
