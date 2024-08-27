@@ -34,9 +34,7 @@ def main(step, simulation, data):
     vel = np.array([0.0, 0.0, 0.0]) * unit.nanometer / unit.picosecond
     for i in xenons:
         com += positions[i]
-        vel += velocities[i]
     com /= len(xenons)
-    vel /= len(xenons)
 
     positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
@@ -50,7 +48,7 @@ def main(step, simulation, data):
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
 
-    simulation.context.reinitialize()
+    # simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
 
