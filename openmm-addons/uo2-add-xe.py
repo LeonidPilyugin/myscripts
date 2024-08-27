@@ -48,6 +48,8 @@ def main(step, simulation, data):
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
 
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
     simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
