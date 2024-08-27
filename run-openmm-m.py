@@ -130,8 +130,6 @@ class Simulation:
         
     def mean_next(self, steps):
         """Means"""
-        
-        time_ = self.context.getTime().value_in_unit(unit.second)
         state = self.get_state()
         
         p = state.getPositions(asNumpy=True)
@@ -166,8 +164,6 @@ class Simulation:
             bv_ = state.getPeriodicBoxVectors(asNumpy=True).value_in_unit(unit.meter)
             bv_ = np.asarray([bv_[0][0], bv_[1][1], bv_[2][2]])
             
-        time_ = self.context.getTime().value_in_unit(unit.second) - time_
-        
         # mean parameters
         positions /= steps
         velocities /= steps
