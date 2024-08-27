@@ -30,31 +30,29 @@ def main(step, simulation, data):
         masses.append(mass)
 
     # compute COM
-    com = np.array([0.0, 0.0, 0.0]) * unit.nanometer
-    vel = np.array([0.0, 0.0, 0.0]) * unit.nanometer / unit.picosecond
-    for i in xenons:
-        com += positions[i]
-    com /= len(xenons)
+    # com = np.array([0.0, 0.0, 0.0]) * unit.nanometer
+    # vel = np.array([0.0, 0.0, 0.0]) * unit.nanometer / unit.picosecond
+    # for i in xenons:
+    #     com += positions[i]
+    # com /= len(xenons)
 
-    positions = np.vstack([positions, com]) * unit.nanometer
-    velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
+    # positions = np.vstack([positions, com]) * unit.nanometer
+    # velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
     # insert Xe
-    system.addParticle(masses[xenons[0]])
-    masses.append(masses[xenons[0]])
+    # system.addParticle(masses[xenons[0]])
+    # masses.append(masses[xenons[0]])
 
-    for i in range(len(system.getForces())):
-        force = system.getForce(i)
-        if hasattr(force, "addParticle"):
-            force.addParticle(*data["potentials"][i]["particles"]["3"])
+    # for i in range(len(system.getForces())):
+    #     force = system.getForce(i)
+    #     if hasattr(force, "addParticle"):
+    #         force.addParticle(*data["potentials"][i]["particles"]["3"])
 
-    simulation.context.setPositions(positions)
-    simulation.context.setVelocities(velocities)
-    simulation.context.reinitialize()
-    simulation.context.setPositions(positions)
-    simulation.context.setVelocities(velocities)
-
-    simulation.get_state()
+    # simulation.context.setPositions(positions)
+    # simulation.context.setVelocities(velocities)
+    # simulation.context.reinitialize()
+    # simulation.context.setPositions(positions)
+    # simulation.context.setVelocities(velocities)
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
@@ -69,7 +67,7 @@ def main(step, simulation, data):
     velocities2 = state.getVelocities(asNumpy=True)
 
     types = simulation.frame.atoms.get_prop("type").get_arr()
-    types.append(3)
+    # types.append(3)
 
     x = positions2[:,0].tolist()
     y = positions2[:,1].tolist()
