@@ -34,13 +34,15 @@ def main(step, simulation, data):
     vel = np.array([0.0, 0.0, 0.0]) * unit.nanometer / unit.picosecond
     for i in xenons:
         com += positions[i]
+        vel += velocities[i]
     com /= len(xenons)
+    vel /= len(xenons)
 
     positions = np.vstack([positions, com])
     velocities = np.vstack([velocities, vel])
 
     # insert Xe
-    print(system.getNumParticles(), system.addParticle(masses[xenons[0]]))
+    system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
 
     for i in range(len(system.getForces())):
