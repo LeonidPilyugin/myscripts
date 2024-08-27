@@ -49,8 +49,8 @@ def main(step, simulation, data):
     #velocities = np.vstack([velocities, vel])
 
     # simulation.context.reinitialize()
-    # simulation.context.setPositions(positions)
-    # simulation.context.setVelocities(velocities)
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
     # simulation.integrator = simulation.context.getIntegrator()
 
     # relax
