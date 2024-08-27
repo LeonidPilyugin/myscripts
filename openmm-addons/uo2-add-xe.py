@@ -38,12 +38,8 @@ def main(step, simulation, data):
     com /= len(xenons)
     vel /= len(xenons)
 
-    print(positions[-5:], "\n", velocities[-5:], "\n")
-
-    positions = np.vstack([positions, com])
-    velocities = np.vstack([velocities, vel])
-
-    print(positions[-5:], "\n", velocities[-5:], "\n")
+    positions = np.vstack([positions, com]) * unit.nanometer
+    velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
     # insert Xe
     system.addParticle(masses[xenons[0]])
