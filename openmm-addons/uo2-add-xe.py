@@ -37,18 +37,18 @@ def main(step, simulation, data):
     com /= len(xenons)
 
     # insert Xe
-    #system.addParticle(masses[xenons[0]])
-    #masses.append(masses[xenons[0]])
+    system.addParticle(masses[xenons[0]])
+    masses.append(masses[xenons[0]])
 
-    #for i in range(len(system.getForces())):
-    #    force = system.getForce(i)
-    #    if hasattr(force, "addParticle"):
-    #        force.addParticle(*data["potentials"][i]["particles"]["3"])
+    for i in range(len(system.getForces())):
+        force = system.getForce(i)
+        if hasattr(force, "addParticle"):
+            force.addParticle(*data["potentials"][i]["particles"]["3"])
 
-    #positions = np.vstack([positions, com])
-    #velocities = np.vstack([velocities, vel])
+    positions = np.vstack([positions, com])
+    velocities = np.vstack([velocities, vel])
 
-    simulation.context.reinitialize()
+    # simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
     # simulation.integrator = simulation.context.getIntegrator()
@@ -66,7 +66,7 @@ def main(step, simulation, data):
     velocities2 = state.getVelocities(asNumpy=True)
 
     types = simulation.frame.atoms.get_prop("type").get_arr()
-    #types.append(3)
+    types.append(3)
 
     x = positions2[:,0].tolist()
     y = positions2[:,1].tolist()

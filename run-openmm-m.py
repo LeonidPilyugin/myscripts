@@ -115,8 +115,6 @@ class Simulation:
         self.frame = frame
         self.context = context
         self.integrator = integrator
-        self.running = False
-
         self.get_state_flags = {'getPositions': True,
                                 'getVelocities': True,
                                 'enforcePeriodicBox': False,
@@ -125,7 +123,6 @@ class Simulation:
                                }
 
     def get_state(self) -> openmm.State:
-        assert not self.running
         return self.context.getState(**self.get_state_flags)
 
     def skip_steps(self, steps):
@@ -139,15 +136,13 @@ class Simulation:
         
         p = state.getPositions(asNumpy=True)
         v = state.getVelocities(asNumpy=True)
-        u = t = T = P = 0
+        u = t = T = 0
         positions = np.zeros_like(p)
         velocities = np.zeros_like(v)
 
         masses = np.asarray(self.frame.atoms.get_prop("mass").get_arr())
         masses /= scipy.constants.N_A * 1000
         
-        Gs = []
-
         for _ in range(steps):
             # run 1 step
             self.integrator.step(1)
@@ -168,7 +163,6 @@ class Simulation:
             T_ = (masses * np.sum(v.value_in_unit(unit.meter / unit.second) ** 2, axis=1)).sum() / scipy.constants.k / N_ / 3
             T += T_
             
-            V_ = state.getPeriodicBoxVolume().value_in_unit(unit.meter ** 3)
             bv_ = state.getPeriodicBoxVectors(asNumpy=True).value_in_unit(unit.meter)
             bv_ = np.asarray([bv_[0][0], bv_[1][1], bv_[2][2]])
             
@@ -225,6 +219,7 @@ class Simulation:
             f.flush()
 
         IO.dump_frame(self.frame, trj_file)
+
 
 if __name__ == "__main__":
     root = Path(sys.argv[1])
