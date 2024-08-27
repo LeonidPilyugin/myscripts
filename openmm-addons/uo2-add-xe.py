@@ -50,7 +50,7 @@ def main(step, simulation, data):
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
 
-    simulation.context = openmm.Context(system, simulation.context.getIntegrator(), simulation.context.getPlatform(), data["platform"]["properties"])
+    simulation.context = openmm.Context(system, simulation.context.getIntegrator().__copy__(), simulation.context.getPlatform(), data["platform"]["properties"])
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
 
