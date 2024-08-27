@@ -48,11 +48,14 @@ def main(step, simulation, data):
     #     if hasattr(force, "addParticle"):
     #         force.addParticle(*data["potentials"][i]["particles"]["3"])
 
+    print(simulation.getIntegrator().getStepSize())
+
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
     simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
+    print(simulation.getIntegrator().getStepSize())
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
