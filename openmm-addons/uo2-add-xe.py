@@ -50,7 +50,7 @@ def main(step, simulation, data):
 
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
-    simulation.context.reinitialize()
+    simulation.context.reinitialize(True)
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
     # simulation.integrator = simulation.context.getIntegrator()
