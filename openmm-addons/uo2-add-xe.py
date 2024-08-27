@@ -44,16 +44,13 @@ def main(step, simulation, data):
         force = system.getForce(i)
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
+            force.updateParametersInContext(simulation.context)
 
     positions = np.vstack([positions, com])
     velocities = np.vstack([velocities, vel])
 
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
-    simulation.context.reinitialize(True)
-    simulation.context.setPositions(positions)
-    simulation.context.setVelocities(velocities)
-    # simulation.integrator = simulation.context.getIntegrator()
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
