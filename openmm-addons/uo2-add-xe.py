@@ -40,11 +40,11 @@ def main(step, simulation, data):
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
     # insert Xe
-    simulation.context.setPositions(positions)
-    simulation.context.setVelocities(velocities)
-
     system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
+
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
 
     for i in range(len(system.getForces())):
         force = system.getForce(i)
