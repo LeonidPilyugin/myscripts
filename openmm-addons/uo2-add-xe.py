@@ -41,6 +41,8 @@ def main(step, simulation, data):
     positions = np.vstack([positions, com])
     velocities = np.vstack([velocities, vel])
 
+    print(positions[-5:], velocities[-5:])
+
     # insert Xe
     system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
@@ -50,7 +52,7 @@ def main(step, simulation, data):
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
 
-    simulation.context = openmm.Context(system, simulation.context.getIntegrator().__copy__(), simulation.context.getPlatform(), data["platform"]["properties"])
+    simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
 
