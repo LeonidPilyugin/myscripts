@@ -43,13 +43,10 @@ def main(step, simulation, data):
     system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
 
-    simulation.context.setPositions(positions)
-    simulation.context.setVelocities(velocities)
-
     for i in range(len(system.getForces())):
         force = system.getForce(i)
         if hasattr(force, "addParticle"):
-            force.addParticle(*data["potentials"][i]["particles"]["3"])
+            print(force.addParticle(*data["potentials"][i]["particles"]["3"]))
 
     simulation.context.reinitialize()
 
