@@ -52,9 +52,14 @@ def main(step, simulation, data):
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
 
-    sss = simulation.context.getState()
-    simulation.context.setState(sss)
-    simulation.context.reinitialize(True)
+    state = simulation.get_state()
+    positions2 = state.getPositions(asNumpy=True)
+    velocities2 = state.getVelocities(asNumpy=True)
+
+    print([m for m in (positions2 - positions) if any([m[i] > 0.01 for i in range(3)])])
+    print([m for m in (velocities2 - velocities) if any([m[i] > 0.01 for i in range(3)])])
+
+    exit(0)
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
