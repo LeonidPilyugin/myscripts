@@ -54,6 +54,8 @@ def main(step, simulation, data):
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
 
+    simulation.context = openmm.context(system, simulation.getIntegrator(), simulation.context.getPlatform(), data["platform"]["properties"])
+
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
 
