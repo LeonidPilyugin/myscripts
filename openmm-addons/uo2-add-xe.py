@@ -51,7 +51,7 @@ def main(step, simulation, data):
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
     simulation.context.reinitialize()
-    simulation.context.setPeriodicBoxVectors(pbv)
+    simulation.context.setPeriodicBoxVectors(*pbv)
 
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
