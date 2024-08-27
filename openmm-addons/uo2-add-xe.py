@@ -62,18 +62,18 @@ def main(step, simulation, data):
     last_inserted = step
 
     state = simulation.get_state()
-    positions = state.getPositions(asNumpy=True)
-    velocities = state.getVelocities(asNumpy=True)
+    positions2 = state.getPositions(asNumpy=True)
+    velocities2 = state.getVelocities(asNumpy=True)
 
     types = simulation.frame.atoms.get_prop("type").get_arr()
     #types.append(3)
 
-    x = positions[:,0].tolist()
-    y = positions[:,1].tolist()
-    z = positions[:,2].tolist()
-    vx = velocities[:,0].tolist()
-    vy = velocities[:,1].tolist()
-    vz = velocities[:,2].tolist()
+    x = positions2[:,0].tolist()
+    y = positions2[:,1].tolist()
+    z = positions2[:,2].tolist()
+    vx = velocities2[:,0].tolist()
+    vy = velocities2[:,1].tolist()
+    vz = velocities2[:,2].tolist()
 
     simulation.update_frame(
         n=len(x),
