@@ -52,6 +52,7 @@ def main(step, simulation, data):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
     simulation.context.reinitialize()
     simulation.context.setPeriodicBoxVectors(*pbv)
+    print(pbv)
 
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
