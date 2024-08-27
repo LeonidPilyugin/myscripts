@@ -58,8 +58,8 @@ def main(step, simulation, data):
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
 
-    print([m for m in (positions2 - positions) if any([m[i] > 0.01 for i in range(3)])])
-    print([m for m in (velocities2 - velocities) if any([m[i] > 0.01 for i in range(3)])])
+    print([m for m in (positions2 - positions) if any([m[i].value_in_unit(unit.nanometer) > 0.01 for i in range(3)])])
+    print([m for m in (velocities2 - velocities) if any([m[i].value_in_unit(unit.nanometer / unit.picosecond) > 0.01 for i in range(3)])])
 
     exit(0)
 
