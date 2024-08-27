@@ -65,7 +65,7 @@ def main(step, simulation, data):
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
 
-    print([m for m in (positions2 - positions).tolist() if all([abs(m[i]) > 0.01 for i in range(3)])])
+    print([m for m in (positions2 - positions).tolist() if any([abs(m[i]) > 0.01 for i in range(3)])])
 
     types = simulation.frame.atoms.get_prop("type").get_arr()
     #types.append(3)
