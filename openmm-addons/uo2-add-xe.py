@@ -65,6 +65,8 @@ def main(step, simulation, data):
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
 
+    print(len(positions), len(positions2), '\n')
+
     types = simulation.frame.atoms.get_prop("type").get_arr()
     types.append(3)
 
