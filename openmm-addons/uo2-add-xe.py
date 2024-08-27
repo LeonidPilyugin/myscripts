@@ -29,9 +29,6 @@ def main(step, simulation, data):
             system.setParticleMass(i, 0.0)
         masses.append(mass)
 
-
-    pbv = system.getDefaultPeriodicBoxVectors()
-
     # compute COM
     com = np.array([0.0, 0.0, 0.0]) * unit.nanometer
     vel = np.array([0.0, 0.0, 0.0]) * unit.nanometer / unit.picosecond
@@ -50,12 +47,14 @@ def main(step, simulation, data):
         force = system.getForce(i)
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
-    simulation.context.reinitialize()
-    simulation.context.setPeriodicBoxVectors(*pbv)
-    print(pbv)
 
+    simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
+
+    sss = simulation.context.getState()
+    simulation.context.setState(sss)
+    simulation.context.reinitialize(True)
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
