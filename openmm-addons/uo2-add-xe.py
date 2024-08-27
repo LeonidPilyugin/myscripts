@@ -54,14 +54,7 @@ def main(step, simulation, data):
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
 
-    state = simulation.get_state()
-    positions2 = state.getPositions(asNumpy=True)
-    velocities2 = state.getVelocities(asNumpy=True)
-
-    print([m for m in (positions2 - positions) if any([m[i].value_in_unit(unit.nanometer) > 0.01 for i in range(3)])])
-    print([m for m in (velocities2 - velocities) if any([m[i].value_in_unit(unit.nanometer / unit.picosecond) > 0.01 for i in range(3)])])
-
-    exit(0)
+    simulation.get_state()
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
