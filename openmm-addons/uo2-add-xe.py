@@ -48,10 +48,10 @@ def main(step, simulation, data):
     #positions = np.vstack([positions, com])
     #velocities = np.vstack([velocities, vel])
 
-    simulation.context.reinitialize()
-    simulation.context.setPositions(positions)
-    simulation.context.setVelocities(velocities)
-    simulation.integrator = simulation.context.getIntegrator()
+    # simulation.context.reinitialize()
+    # simulation.context.setPositions(positions)
+    # simulation.context.setVelocities(velocities)
+    # simulation.integrator = simulation.context.getIntegrator()
 
     # relax
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
@@ -64,8 +64,6 @@ def main(step, simulation, data):
     state = simulation.get_state()
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
-
-    print([m for m in (velocities2 - velocities).tolist() if any([abs(m[i]) > 0.01 for i in range(3)])])
 
     types = simulation.frame.atoms.get_prop("type").get_arr()
     #types.append(3)
