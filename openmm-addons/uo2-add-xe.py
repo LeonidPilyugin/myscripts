@@ -48,7 +48,9 @@ def main(step, simulation, data):
     positions = np.vstack([positions, com])
     velocities = np.vstack([velocities, vel])
 
-    # simulation.context.reinitialize()
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
+    simulation.context.reinitialize()
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
     # simulation.integrator = simulation.context.getIntegrator()
@@ -64,8 +66,6 @@ def main(step, simulation, data):
     state = simulation.get_state()
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
-
-    print(len(positions), len(positions2), '\n')
 
     types = simulation.frame.atoms.get_prop("type").get_arr()
     types.append(3)
