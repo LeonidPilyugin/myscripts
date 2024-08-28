@@ -56,8 +56,8 @@ def main(step, simulation, data):
     LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
 
     # set masses
-    for i in range(n):
-        system.setParticleMass(i, masses[i])
+    for i, m in enumerate(masses):
+        system.setParticleMass(i, m)
     last_inserted = step
 
     state = simulation.get_state()
