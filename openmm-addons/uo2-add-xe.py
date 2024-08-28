@@ -36,10 +36,6 @@ def main(step, simulation, data):
         com += positions[i]
     com /= len(xenons)
 
-    arr = [positions[i] - com for i in xenons]
-    print(arr)
-    exit(0)
-
     positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
