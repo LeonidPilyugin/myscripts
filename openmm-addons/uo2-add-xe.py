@@ -53,7 +53,7 @@ def main(step, simulation, data):
     simulation.context.setVelocities(velocities)
 
     # relax
-    LocalEnergyMinimizer.minimize(simulation.context, data["emin_tolerance"], data["emin_max_iter"])
+    LocalEnergyMinimizer.minimize(simulation.context, *data["emin_args"])
 
     # set masses
     for i, m in enumerate(masses):
