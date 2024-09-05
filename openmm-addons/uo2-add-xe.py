@@ -4,6 +4,10 @@ from openmm.openmm import LocalEnergyMinimizer
 from openmm import unit
 from gi.repository import Aml
 
+class MinimizationReporter(openmm.MinimizationReporter):
+    def report(self, iteration, x, grad):
+        print(iteration, x, grad)
+
 last_inserted = 0
 
 def main(step, simulation, data):
@@ -53,7 +57,10 @@ def main(step, simulation, data):
     simulation.context.setVelocities(velocities)
 
     # relax
-    LocalEnergyMinimizer.minimize(simulation.context, *data["emin_args"], openmm.MinimizationReporter())
+    args = data["emin_args"]
+    if args[-1] is True:
+        args[-1] = MinimizationReporter()
+    LocalEnergyMinimizer.minimize(simulation.context, *args)
 
     # set masses
     for i, m in enumerate(masses):
