@@ -5,8 +5,9 @@ from openmm import unit
 from gi.repository import Aml
 
 class MinimizationReporter(openmm.MinimizationReporter):
-    def report(self, iteration, x, grad):
-        print(iteration, x, grad)
+    def report(self, *args):
+        print(args)
+        return False
 
 last_inserted = 0
 
