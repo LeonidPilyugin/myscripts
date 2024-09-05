@@ -262,12 +262,15 @@ if __name__ == "__main__":
 
     
     step = 0
+    saved_checkpoints = 0
     # load last checkpoint
     if list(checkpoint_dir.iterdir()):
         step = max([int(file.stem) for file in checkpoint_dir.iterdir()])
         checkpoint = str(checkpoint_dir.joinpath(f"{step}.chp"))
         with open(checkpoint, "b+r") as f:
             simulation.context.loadCheckpoint(f.read())
+
+        saved_checkpoints = len(list(checkpoint_dir.iterdir()))
 
     # create thermo file
     thermo_file = root.joinpath("thermo.csv")
@@ -289,7 +292,6 @@ if __name__ == "__main__":
                 f.write(line)
 
     iter_steps = data["average_steps"] + data["skip_steps"]
-    saved_checkpoints = 0
 
     # load add-ons
     add_ons = []
