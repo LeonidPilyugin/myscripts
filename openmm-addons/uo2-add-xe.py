@@ -58,9 +58,9 @@ def main(step, simulation, data):
 
     # relax
     args = data["emin_args"]
-    if args[-1] is True:
-        args[-1] = MinimizationReporter()
-    LocalEnergyMinimizer.minimize(simulation.context, *args)
+    if "reporter" in args and args["reporter"] is True:
+        args["reporter"] = MinimizationReporter()
+    LocalEnergyMinimizer.minimize(simulation.context, **args)
 
     # set masses
     for i, m in enumerate(masses):
