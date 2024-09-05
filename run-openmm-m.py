@@ -260,6 +260,7 @@ if __name__ == "__main__":
         for i, force in enumerate(forces):
             f.write(f"{i},{force[0]},{force[1]},{force[2]}\n")
 
+    iter_steps = data["average_steps"] + data["skip_steps"]
     
     step = 0
     saved_checkpoints = 0
@@ -271,6 +272,8 @@ if __name__ == "__main__":
             simulation.context.loadCheckpoint(f.read())
 
         saved_checkpoints = len(list(checkpoint_dir.iterdir()))
+
+        step += iter_steps
 
     # create thermo file
     thermo_file = root.joinpath("thermo.csv")
@@ -290,8 +293,6 @@ if __name__ == "__main__":
         with open(thermo_file, "w") as f:
             for line in lines:
                 f.write(line)
-
-    iter_steps = data["average_steps"] + data["skip_steps"]
 
     # load add-ons
     add_ons = []
