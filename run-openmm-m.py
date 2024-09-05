@@ -288,6 +288,7 @@ if __name__ == "__main__":
             while st != step:
                 lines.append(line)
                 line = f.readline()
+                print(line)
                 st = int(line.split(",")[0])
 
         with open(thermo_file, "w") as f:
