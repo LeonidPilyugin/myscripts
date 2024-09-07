@@ -48,7 +48,7 @@ def main(step, simulation, data):
 
     print("New atom position:", positions[-1])
     print("New atom velocity:", velocities[-1])
-    p = [p[-1] - p[i] for i in range(len(positions)) if all([abs(positions[-1][j] - positions[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
+    p = [positions[-1] - positions[i] for i in range(len(positions)) if all([abs(positions[-1][j] - positions[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
     print("New atom distances:", p)
     print("\nMinimization")
 
@@ -82,7 +82,7 @@ def main(step, simulation, data):
 
     print("New atom position:", positions2[-1])
     print("New atom velocity:", velocities2[-1])
-    p = [p[-1] - p[i] for i in range(len(positions2)) if all([abs(positions2[-1][j] - positions2[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
+    p = [positions2[-1] - positions2[i] for i in range(len(positions2)) if all([abs(positions2[-1][j] - positions2[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
     print("New atom distances:", p)
     print("\n")
 
