@@ -3,6 +3,7 @@ import openmm
 from openmm.openmm import LocalEnergyMinimizer
 from openmm import unit
 from gi.repository import Aml
+import sys
 
 class MinimizationReporter(openmm.MinimizationReporter):
     def report(self, *args):
@@ -50,6 +51,7 @@ def main(step, simulation, data):
     print("New atom velocity:", velocities[-1])
     p = [positions[-1] - positions[i] for i in range(len(positions)) if all([abs(positions[-1][j] - positions[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
     print("New atom distances:", p)
+    sys.stdout.flush()
     print("After minimization")
 
     # insert Xe
@@ -85,6 +87,7 @@ def main(step, simulation, data):
     p = [positions2[-1] - positions2[i] for i in range(len(positions2)) if all([abs(positions2[-1][j] - positions2[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
     print("New atom distances:", p)
     print("\n")
+    sys.stdout.flush()
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions2)
