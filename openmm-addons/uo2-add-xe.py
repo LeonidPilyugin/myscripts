@@ -6,14 +6,14 @@ from gi.repository import Aml
 
 class MinimizationReporter(openmm.MinimizationReporter):
     def report(self, *args):
-        print(args)
+        #print(args)
         return False
 
 last_inserted = 0
 
 def main(step, simulation, data):
     global last_inserted
-    if step - last_inserted < data["insert_xe_every"]:
+    if step != 0 and step - last_inserted < data["insert_xe_every"]:
         return
 
     state = simulation.get_state()
@@ -44,6 +44,9 @@ def main(step, simulation, data):
     positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
+    print("New atom position:", positions[-1])
+    print("New atom velocity:", velocities[-1])
+
     # insert Xe
     system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
@@ -71,6 +74,9 @@ def main(step, simulation, data):
     state = simulation.get_state()
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
+
+    print("New atom position:", positions2[-1])
+    print("New atom velocity:", velocities2[-1])
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions2)
