@@ -44,13 +44,13 @@ def main(step, simulation, data):
     positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
-    print(f"Step {step}\n")
+    print(f"Step {step}")
 
     print("New atom position:", positions[-1])
     print("New atom velocity:", velocities[-1])
     p = [positions[-1] - positions[i] for i in range(len(positions)) if all([abs(positions[-1][j] - positions[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
     print("New atom distances:", p)
-    print("\nMinimization")
+    print("After minimization")
 
     # insert Xe
     system.addParticle(masses[xenons[0]])
@@ -67,7 +67,7 @@ def main(step, simulation, data):
 
     # relax
     args = data["emin_args"]
-    if "reporter" in args and args["reporter"] is True:
+    if "reporter" in args:
         args["reporter"] = MinimizationReporter()
     LocalEnergyMinimizer.minimize(simulation.context, **args)
 
