@@ -44,8 +44,13 @@ def main(step, simulation, data):
     positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
+    print(f"Step {step}\n")
+
     print("New atom position:", positions[-1])
     print("New atom velocity:", velocities[-1])
+    p = [p[-1] - p[i] for i in range(len(positions)) if all([abs(p[-1][j] - p[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
+    print("New atom distances:", p)
+    print("\nMinimization")
 
     # insert Xe
     system.addParticle(masses[xenons[0]])
@@ -77,6 +82,9 @@ def main(step, simulation, data):
 
     print("New atom position:", positions2[-1])
     print("New atom velocity:", velocities2[-1])
+    p = [p[-1] - p[i] for i in range(len(positions2)) if all([abs(p[-1][j] - p[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
+    print("New atom distances:", p)
+    print("\n")
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions2)
