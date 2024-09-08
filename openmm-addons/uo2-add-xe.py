@@ -5,18 +5,7 @@ from openmm import unit
 from gi.repository import Aml
 import sys
 
-class MinimizationReporter(openmm.MinimizationReporter):
-    def report(self, *args):
-        #print(args)
-        return False
-
-last_inserted = 0
-
 def main(step, simulation, data):
-    global last_inserted
-    if step != 0 and step - last_inserted < data["insert_xe_every"]:
-        return
-
     state = simulation.get_state()
     system = simulation.context.getSystem()
 
@@ -69,9 +58,10 @@ def main(step, simulation, data):
 
     # relax
     args = data["emin_args"]
-    if "reporter" in args:
-        args["reporter"] = MinimizationReporter()
-    LocalEnergyMinimizer.minimize(simulation.context, **args)
+
+    for i in range(data["emin_iter"]):
+        LocalEnergyMinimizer.minimize(simulation.context, **args)
+        simulation.skip_steps(data["emin_skip"])
 
     # set masses
     for i, m in enumerate(masses):
