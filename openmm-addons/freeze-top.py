@@ -32,6 +32,7 @@ def main(step, simulation, data):
     vx = velocities[:,0].tolist()
     vy = velocities[:,1].tolist()
     vz = velocities[:,2].tolist()
+    types = simulation.frame.atoms.get_prop("type").get_arr()
 
     simulation.update_frame(
         n=len(x),
