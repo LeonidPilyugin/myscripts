@@ -17,7 +17,7 @@ def main(step, simulation, data):
 
     masses = []
     for i in range(n):
-        if positions[i][2] > data["freeze_top"]:
+        if positions[i][2].value_in_unit(unit.angstrom) > data["freeze_top"]:
             velocities[i][0] = velocities[i][1] = velocities[i][2] = 0.0
             system.setParticleMass(i, 0.0)
         masses.append(system.getParticleMass(i))
