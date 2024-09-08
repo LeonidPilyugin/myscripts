@@ -34,14 +34,14 @@ def main(step, simulation, data):
     positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
-    print(f"Step {step}")
+    # print(f"Step {step}")
 
-    print("New atom position:", positions[-1])
-    print("New atom velocity:", velocities[-1])
-    p = [positions[-1] - positions[i] for i in range(len(positions)) if all([abs(positions[-1][j] - positions[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
-    print("New atom distances:", p)
-    sys.stdout.flush()
-    print("After minimization")
+    # print("New atom position:", positions[-1])
+    # print("New atom velocity:", velocities[-1])
+    # p = [positions[-1] - positions[i] for i in range(len(positions)) if all([abs(positions[-1][j] - positions[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
+    # print("New atom distances:", p)
+    # sys.stdout.flush()
+    # print("After minimization")
 
     # insert Xe
     system.addParticle(masses[xenons[0]])
@@ -72,12 +72,12 @@ def main(step, simulation, data):
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
 
-    print("New atom position:", positions2[-1])
-    print("New atom velocity:", velocities2[-1])
-    p = [positions2[-1] - positions2[i] for i in range(len(positions2)) if all([abs(positions2[-1][j] - positions2[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
-    print("New atom distances:", p)
-    print("\n")
-    sys.stdout.flush()
+    # print("New atom position:", positions2[-1])
+    # print("New atom velocity:", velocities2[-1])
+    # p = [positions2[-1] - positions2[i] for i in range(len(positions2)) if all([abs(positions2[-1][j] - positions2[i][j]) < 0.5 * unit.nanometer for j in range(3)])]
+    # print("New atom distances:", p)
+    # print("\n")
+    # sys.stdout.flush()
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions2)
