@@ -32,7 +32,7 @@ def main(step, simulation, data):
         com += positions[i]
     com /= len(xenons)
 
-    nearest = [i for i in range(n) if all([com[j] - positions[i][j] for j in range(3)])]
+    nearest = [i for i in range(n) if all([com[j] - positions[i][j] < 0.5 * unit.nanometer for j in range(3)])]
     for p in nearest:
         system.setParticleMass(p, masses[p])
 
