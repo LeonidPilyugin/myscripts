@@ -21,7 +21,8 @@ def main(step, simulation, data):
         if 131 < mass.value_in_unit(unit.amu) < 132:
             xenons.append(i)
         else:
-            system.setParticleMass(i, 0.0)
+            pass
+        system.setParticleMass(i, 0.0)
         masses.append(mass)
 
     # compute COM
@@ -61,9 +62,7 @@ def main(step, simulation, data):
 
     for i in range(data["emin_iter"]):
         LocalEnergyMinimizer.minimize(simulation.context, **args)
-        for i in range(data["emin_skip"]):
-            simulation.skip_steps(1)
-            simulation.context.setVelocities(velocities)
+        simulation.skip_steps(data["emin_skip"])
 
     # set masses
     for i, m in enumerate(masses):
