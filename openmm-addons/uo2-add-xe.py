@@ -61,8 +61,9 @@ def main(step, simulation, data):
 
     for i in range(data["emin_iter"]):
         LocalEnergyMinimizer.minimize(simulation.context, **args)
-        simulation.skip_steps(data["emin_skip"])
-        simulation.context.setVelocities(velocities)
+        for i in range(data["emin_skip"])
+            simulation.skip_steps(1)
+            simulation.context.setVelocities(velocities)
 
     # set masses
     for i, m in enumerate(masses):
