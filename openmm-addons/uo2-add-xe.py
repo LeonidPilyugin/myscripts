@@ -32,9 +32,9 @@ def main(step, simulation, data):
         com += positions[i]
     com /= len(xenons)
 
-    nearest = [i for i in range(n) if all([com[j] - positions[i][j] < 0.5 * unit.nanometer for j in range(3)])]
-    for p in nearest:
-        system.setParticleMass(p, masses[p])
+    # nearest = [i for i in range(n) if all([com[j] - positions[i][j] < 0.5 * unit.nanometer for j in range(3)])]
+    # for p in nearest:
+        # system.setParticleMass(p, masses[p])
 
     positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
@@ -64,9 +64,9 @@ def main(step, simulation, data):
     # relax
     args = data["emin_args"]
 
-    # for i in range(data["emin_iter"]):
-    LocalEnergyMinimizer.minimize(simulation.context, **args)
-        # simulation.skip_steps(data["emin_skip"])
+    for i in range(data["emin_iter"]):
+        LocalEnergyMinimizer.minimize(simulation.context, **args)
+        simulation.skip_steps(data["emin_skip"])
 
     # set masses
     for i, m in enumerate(masses):
