@@ -36,7 +36,7 @@ def main(step, simulation, data):
     # for p in nearest:
         # system.setParticleMass(p, masses[p])
 
-    print(com[0], positions[0][3])
+    print(com[0], positions[0][2])
 
     nearest = sorted(
         list(range(n)),
