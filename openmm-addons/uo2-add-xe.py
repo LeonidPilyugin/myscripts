@@ -36,6 +36,8 @@ def main(step, simulation, data):
     # for p in nearest:
         # system.setParticleMass(p, masses[p])
 
+    print(com[0], positions[0][3])
+
     nearest = sorted(
         list(range(n)),
         key = lambda i: sum([positions[i][j] - com[j].value_in_unit(unit.nanometer) for j in range(3)])
