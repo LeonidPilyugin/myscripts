@@ -110,6 +110,7 @@ def main(step, simulation, data):
 
     print(system.getNumForces())
     system.removeForce(0)
+    print(system.getNumForces())
     for f in old_forces:
         print(f)
         system.addForce(f)
