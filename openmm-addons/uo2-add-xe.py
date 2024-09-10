@@ -89,7 +89,6 @@ def main(step, simulation, data):
 
     # relax
     args = data["emin_args"]
-
     # for i in range(data["emin_iter"]):
     LocalEnergyMinimizer.minimize(simulation.context, **args)
     # simulation.skip_steps(data["emin_skip"])
@@ -98,15 +97,9 @@ def main(step, simulation, data):
     for i, m in enumerate(masses):
         system.setParticleMass(i, m)
 
-    last_inserted = step
-
     state = simulation.get_state()
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
-
-    simulation.context.reinitialize()
-    simulation.context.setPositions(positions2)
-    simulation.context.setVelocities(velocities2)
 
     del system
     system = simulation.context.getSystem()
