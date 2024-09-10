@@ -41,9 +41,7 @@ def main(step, simulation, data):
         key = lambda i: sum([positions[i][j].value_in_unit(unit.nanometer) - com[j].value_in_unit(unit.nanometer) for j in range(3)])
     )[:data["emin_nearest"]]
 
-    print([positions[n] for n in nearest])
-
-    pos = sum([positions[i] for i in nearest]) / data["emin_nearest"]
+    pos = sum([positions[i].value_in_unit(unit.nanometer) for i in nearest]) / data["emin_nearest"] * unit.nanometer
 
     positions = np.vstack([positions, pos]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
