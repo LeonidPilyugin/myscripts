@@ -4,6 +4,7 @@ from openmm.openmm import LocalEnergyMinimizer
 from openmm import unit
 from gi.repository import Aml
 import sys
+import copy
 
 def main(step, simulation, data):
     state = simulation.get_state()
@@ -63,7 +64,7 @@ def main(step, simulation, data):
         force = system.getForce(i)
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
-        old_forces.append(force)
+        old_forces.append(copy.deepcopy(force))
 
     # remove old forces
     nk = len(system.getForces())
