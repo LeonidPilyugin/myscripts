@@ -97,17 +97,22 @@ def main(step, simulation, data):
     # set masses
     for i, m in enumerate(masses):
         system.setParticleMass(i, m)
-    print(system.getNumForces())
-    system.removeForce(0)
-    for f in old_forces:
-        print(f)
-        system.addForce(f)
 
     last_inserted = step
 
     state = simulation.get_state()
     positions2 = state.getPositions(asNumpy=True)
     velocities2 = state.getVelocities(asNumpy=True)
+
+    simulation.context.reinitialize()
+    simulation.context.setPositions(positions2)
+    simulation.context.setVelocities(velocities2)
+
+    print(system.getNumForces())
+    system.removeForce(0)
+    for f in old_forces:
+        print(f)
+        system.addForce(f)
 
     # print("New atom position:", positions2[-1])
     # print("New atom velocity:", velocities2[-1])
