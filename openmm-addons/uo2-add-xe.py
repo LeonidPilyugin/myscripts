@@ -36,7 +36,8 @@ def main(step, simulation, data):
     # for p in nearest:
         # system.setParticleMass(p, masses[p])
 
-    nearest = list(range(n)).sorted(
+    nearest = sorted(
+        list(range(n)),
         key = lambda i: sum([positions[i][j] - com[j] for j in range(3)])
     )[:data["emin_nearest"]]
 
