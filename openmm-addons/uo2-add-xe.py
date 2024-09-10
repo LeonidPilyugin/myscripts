@@ -41,7 +41,6 @@ def main(step, simulation, data):
     )[:data["emin_nearest"]]
 
     pos = sum([positions[i] for i in nearest]) / data["emin_nearest"]
-    print(pos)
 
     positions = np.vstack([positions, pos]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
@@ -71,9 +70,9 @@ def main(step, simulation, data):
     # relax
     args = data["emin_args"]
 
-    for i in range(data["emin_iter"]):
-        LocalEnergyMinimizer.minimize(simulation.context, **args)
-        simulation.skip_steps(data["emin_skip"])
+    # for i in range(data["emin_iter"]):
+    LocalEnergyMinimizer.minimize(simulation.context, **args)
+        # simulation.skip_steps(data["emin_skip"])
 
     # set masses
     for i, m in enumerate(masses):
