@@ -35,14 +35,14 @@ def main(step, simulation, data):
     # for p in nearest:
         # system.setParticleMass(p, masses[p])
 
-    nearest = sorted(
-        list(range(n)),
-        key = lambda i: sum([positions[i][j].value_in_unit(unit.nanometer) - com[j].value_in_unit(unit.nanometer) for j in range(3)])
-    )[:data["emin_nearest"]]
+    # nearest = sorted(
+        # list(range(n)),
+        # key = lambda i: sum([positions[i][j].value_in_unit(unit.nanometer) - com[j].value_in_unit(unit.nanometer) for j in range(3)])
+    # )[:data["emin_nearest"]]
 
-    pos = sum([positions[i].value_in_unit(unit.nanometer) for i in nearest]) / data["emin_nearest"] * unit.nanometer
+    # pos = sum([positions[i].value_in_unit(unit.nanometer) for i in nearest]) / data["emin_nearest"] * unit.nanometer
 
-    positions = np.vstack([positions, pos]) * unit.nanometer
+    positions = np.vstack([positions, com]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
     # print(f"Step {step}")
@@ -58,10 +58,30 @@ def main(step, simulation, data):
     system.addParticle(masses[xenons[0]])
     masses.append(masses[xenons[0]])
 
+    old_forces = []
     for i in range(len(system.getForces())):
         force = system.getForce(i)
         if hasattr(force, "addParticle"):
             force.addParticle(*data["potentials"][i]["particles"]["3"])
+        old_forces.append(force)
+
+    # remove old forces
+    nk = len(system.getForces())
+    for i in range(nk):
+        system.removeForce(nk - i - 1)
+
+    # set lj force
+    lj_force = openmm.CustomNonbondedForce(
+            "4*{epsilon}*(({sigma}/r)^12-({sigma}/r)^6)".format(
+                epsilon=1.7666,
+                sigma=0.4,
+            )
+        )
+    lj_force.setNonbondedMethod(openmm.CustomNonbondedForce.CutoffPeriodic)
+    lj_force.setCutoffDistance(1.0)
+    for _ in range(system.getNumParticles()):
+        lj_force.addParticle([])
+    system.addForce(lj_force)
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions)
@@ -71,8 +91,8 @@ def main(step, simulation, data):
     args = data["emin_args"]
 
     # for i in range(data["emin_iter"]):
-    # LocalEnergyMinimizer.minimize(simulation.context, **args)
-    simulation.skip_steps(data["emin_skip"])
+    LocalEnergyMinimizer.minimize(simulation.context, **args)
+    # simulation.skip_steps(data["emin_skip"])
 
     # set masses
     for i, m in enumerate(masses):
@@ -89,6 +109,10 @@ def main(step, simulation, data):
     # print("New atom distances:", p)
     # print("\n")
     # sys.stdout.flush()
+
+    system.removeForce(0)
+    for f in old_forces:
+        system.addForce(f)
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions2)
