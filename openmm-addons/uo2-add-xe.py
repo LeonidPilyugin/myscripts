@@ -97,6 +97,7 @@ def main(step, simulation, data):
     # set masses
     for i, m in enumerate(masses):
         system.setParticleMass(i, m)
+    print(system.getNumForces())
     system.removeForce(0)
     for f in old_forces:
         print(f)
