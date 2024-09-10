@@ -111,7 +111,7 @@ def main(step, simulation, data):
     for f in old_forces:
         print(f)
         system.addForce(f)
-    system.removeForce(0)
+    simulation.system.removeForce(0)
 
     # print("New atom position:", positions2[-1])
     # print("New atom velocity:", velocities2[-1])
