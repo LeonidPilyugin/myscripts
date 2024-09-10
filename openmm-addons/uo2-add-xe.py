@@ -110,7 +110,7 @@ def main(step, simulation, data):
 
     system = simulation.context.getSystem()
 
-    simulation.system.removeForce(0)
+    system.removeForce(0)
     for f in old_forces:
         system.addForce(f)
 
