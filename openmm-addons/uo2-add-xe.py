@@ -112,7 +112,7 @@ def main(step, simulation, data):
 
     system.removeForce(0)
     for f in old_forces:
-        system.addForce(f)
+        simulation.context.getSystem().addForce(f)
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions2)
