@@ -21,8 +21,7 @@ def main(step, simulation, data):
         if 131 < mass.value_in_unit(unit.amu) < 132:
             xenons.append(i)
         else:
-            pass
-        system.setParticleMass(i, 0.0)
+            system.setParticleMass(i, 0.0)
         masses.append(mass)
 
     # compute COM
@@ -40,9 +39,6 @@ def main(step, simulation, data):
         list(range(n)),
         key = lambda i: sum([positions[i][j].value_in_unit(unit.nanometer) - com[j].value_in_unit(unit.nanometer) for j in range(3)])
     )[:data["emin_nearest"]]
-
-    for i in nearest:
-        system.setParticleMass(i, masses[i])
 
     pos = sum([positions[i].value_in_unit(unit.nanometer) for i in nearest]) / data["emin_nearest"] * unit.nanometer
 
@@ -75,8 +71,8 @@ def main(step, simulation, data):
     args = data["emin_args"]
 
     # for i in range(data["emin_iter"]):
-    LocalEnergyMinimizer.minimize(simulation.context, **args)
-        # simulation.skip_steps(data["emin_skip"])
+    # LocalEnergyMinimizer.minimize(simulation.context, **args)
+    simulation.skip_steps(data["emin_skip"])
 
     # set masses
     for i, m in enumerate(masses):
