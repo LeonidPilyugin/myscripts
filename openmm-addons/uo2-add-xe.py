@@ -36,7 +36,14 @@ def main(step, simulation, data):
     # for p in nearest:
         # system.setParticleMass(p, masses[p])
 
-    positions = np.vstack([positions, com]) * unit.nanometer
+    nearest = list(range(n)).sorted(
+        key = lambda i: sum([positions[i][j] - com[j] for j in range(3)])
+    )[:data["emin_nearest"]]
+
+    pos = sum([positions[i] for i in nearest]) / data["emin_nearest"]
+    print(pos)
+
+    positions = np.vstack([positions, pos]) * unit.nanometer
     velocities = np.vstack([velocities, vel]) * unit.nanometer / unit.picosecond
 
     # print(f"Step {step}")
