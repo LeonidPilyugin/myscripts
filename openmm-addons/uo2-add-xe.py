@@ -108,8 +108,8 @@ def main(step, simulation, data):
     simulation.context.setPositions(positions2)
     simulation.context.setVelocities(velocities2)
 
+    del system
     system = simulation.context.getSystem()
-
     system.removeForce(0)
     for f in old_forces:
         system.addForce(f)
