@@ -97,6 +97,11 @@ def main(step, simulation, data):
     # set masses
     for i, m in enumerate(masses):
         system.setParticleMass(i, m)
+    system.removeForce(0)
+    for f in old_forces:
+        print(f)
+        system.addForce(f)
+
     last_inserted = step
 
     state = simulation.get_state()
@@ -109,11 +114,6 @@ def main(step, simulation, data):
     # print("New atom distances:", p)
     # print("\n")
     # sys.stdout.flush()
-
-    system.removeForce(0)
-    for f in old_forces:
-        print(f)
-        system.addForce(f)
 
     simulation.context.reinitialize()
     simulation.context.setPositions(positions2)
