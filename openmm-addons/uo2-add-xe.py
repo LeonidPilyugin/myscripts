@@ -41,6 +41,9 @@ def main(step, simulation, data):
         key = lambda i: sum([positions[i][j].value_in_unit(unit.nanometer) - com[j].value_in_unit(unit.nanometer) for j in range(3)])
     )[:data["emin_nearest"]]
 
+    for i in nearest:
+        system.setParticleMass(i, masses[i])
+
     pos = sum([positions[i].value_in_unit(unit.nanometer) for i in nearest]) / data["emin_nearest"] * unit.nanometer
 
     positions = np.vstack([positions, pos]) * unit.nanometer
