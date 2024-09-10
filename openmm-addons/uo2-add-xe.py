@@ -108,12 +108,10 @@ def main(step, simulation, data):
     simulation.context.setPositions(positions2)
     simulation.context.setVelocities(velocities2)
 
-    print(system.getNumForces())
-    system.removeForce(0)
-    print(system.getNumForces())
     for f in old_forces:
         print(f)
         system.addForce(f)
+    system.removeForce(0)
 
     # print("New atom position:", positions2[-1])
     # print("New atom velocity:", velocities2[-1])
