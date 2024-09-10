@@ -40,7 +40,7 @@ def main(step, simulation, data):
 
     nearest = sorted(
         list(range(n)),
-        key = lambda i: sum([positions[i][j] - com[j].value_in_unit(unit.nanometer) for j in range(3)])
+        key = lambda i: sum([positions[i][j].value_in_unit(unit.nanometer) - com[j].value_in_unit(unit.nanometer) for j in range(3)])
     )[:data["emin_nearest"]]
 
     pos = sum([positions[i] for i in nearest]) / data["emin_nearest"]
