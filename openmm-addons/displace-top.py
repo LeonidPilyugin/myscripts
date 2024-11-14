@@ -11,11 +11,11 @@ def main(step, simulation, data):
     if "move_top" in data:
         for i in range(n):
             if positions[i][2] > data["move_top"] * unit.angstrom:
-                positions[i,0] += data["move_magnitude"] * unit.angstrom
+                positions[i][0] += data["move_magnitude"] * unit.angstrom
     else:
         for i in range(n):
             if positions[i][2] < data["move_bottom"] * unit.angstrom:
-                positions[i,0] += data["move_magnitude"] * unit.angstrom
+                positions[i][0] += data["move_magnitude"] * unit.angstrom
 
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
