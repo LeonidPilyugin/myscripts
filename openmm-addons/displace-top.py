@@ -12,7 +12,7 @@ def main(step, simulation, data):
     for i in range(n):
         if ("move_top" in data and positions[i][2] > data["move_top"] * unit.angstrom) or \
             ("move_bottom" in data and positions[i][2] < data["move_bottom"] * unit.angstrom):
-            positions[:,0] += data["move_magnitude"] * unit.angstrom
+            positions[i,0] += data["move_magnitude"] * unit.angstrom
         masses.append(system.getParticleMass(i))
 
     simulation.context.setPositions(positions)
