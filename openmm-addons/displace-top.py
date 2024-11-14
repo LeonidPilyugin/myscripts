@@ -1,8 +1,10 @@
 from gi.repository import Aml
 from openmm import unit
+import sys
 
 def main(step, simulation, data):
     print("begin")
+    sys.stdout.flush()
     system = simulation.context.getSystem()
     state = simulation.get_state()
     n = system.getNumParticles()
@@ -42,3 +44,4 @@ def main(step, simulation, data):
         type=Aml.IntPerAtomProperty.from_array(types),
     )
     print("done")
+    sys.stdout.flush()
