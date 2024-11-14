@@ -3,8 +3,6 @@ from openmm import unit
 import sys
 
 def main(step, simulation, data):
-    print("begin")
-    sys.stdout.flush()
     system = simulation.context.getSystem()
     state = simulation.get_state()
     n = system.getNumParticles()
@@ -43,5 +41,3 @@ def main(step, simulation, data):
         mass=Aml.DoublePerAtomProperty.from_array(masses),
         type=Aml.IntPerAtomProperty.from_array(types),
     )
-    print("done")
-    sys.stdout.flush()
