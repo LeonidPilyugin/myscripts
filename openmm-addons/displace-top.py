@@ -2,6 +2,7 @@ from gi.repository import Aml
 from openmm import unit
 
 def main(step, simulation, data):
+    print("begin")
     system = simulation.context.getSystem()
     state = simulation.get_state()
     n = system.getNumParticles()
@@ -40,3 +41,4 @@ def main(step, simulation, data):
         mass=Aml.DoublePerAtomProperty.from_array(masses),
         type=Aml.IntPerAtomProperty.from_array(types),
     )
+    print("done")
