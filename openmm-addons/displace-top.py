@@ -7,13 +7,15 @@ def main(step, simulation, data):
     n = system.getNumParticles()
     positions = state.getPositions(asNumpy=True)
     velocities = state.getVelocities(asNumpy=True)
-    masses = []
 
-    for i in range(n):
-        if ("move_top" in data and positions[i][2] > data["move_top"] * unit.angstrom) or \
-            ("move_bottom" in data and positions[i][2] < data["move_bottom"] * unit.angstrom):
-            positions[i,0] += data["move_magnitude"] * unit.angstrom
-        masses.append(system.getParticleMass(i))
+    if "move_top" in data:
+        for i in range(n):
+            if positions[i][2] > data["move_top"] * unit.angstrom:
+                positions[i,0] += data["move_magnitude"] * unit.angstrom
+    else:
+        for i in range(n):
+            if positions[i][2] < data["move_bottom"] * unit.angstrom:
+                positions[i,0] += data["move_magnitude"] * unit.angstrom
 
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
@@ -25,6 +27,7 @@ def main(step, simulation, data):
     vy = velocities[:,1].tolist()
     vz = velocities[:,2].tolist()
     types = simulation.frame.atoms.get_prop("type").get_arr()
+    masses = simulation.frame.atoms.get_prop("mass").get_arr()
 
     simulation.update_frame(
         n=len(x),
