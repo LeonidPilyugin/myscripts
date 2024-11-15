@@ -2,7 +2,14 @@ from gi.repository import Aml
 from openmm import unit
 import sys
 
+count = 0
+
 def main(step, simulation, data):
+    global count
+
+    if count > data["move_stop"]:
+        return
+
     system = simulation.context.getSystem()
     state = simulation.get_state()
     n = system.getNumParticles()
@@ -41,3 +48,4 @@ def main(step, simulation, data):
         mass=Aml.DoublePerAtomProperty.from_array(masses),
         type=Aml.IntPerAtomProperty.from_array(types),
     )
+    count += 1
