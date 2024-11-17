@@ -3,7 +3,7 @@ from openmm import unit
 
 skip = False
 
-def main(step, simulation, data):
+def main(step, simulation, data, *args, **kwargs):
     global skip
     if skip:
         return

@@ -76,7 +76,7 @@ class SimulationData:
     def add_force(self, force):
         self.forces.append(force)
 
-    def make_simulation(self, platform, properties):
+    def make_simulation(self, platform, properties, root):
         try:
             loaded_platform = openmm.Platform.getPlatformByName(platform)
         except openmm.OpenMMException:
@@ -106,15 +106,16 @@ class SimulationData:
             assert hasattr(self, 'temperature')
             context.setVelocitiesToTemperature(self.temperature)
 
-        simulation = Simulation(context, self.integrator, self.frame)
+        simulation = Simulation(context, self.integrator, self.frame, root)
         return simulation
 
 
 class Simulation:
-    def __init__(self, context, integrator, frame):
+    def __init__(self, context, integrator, frame, root):
         self.frame = frame
         self.context = context
         self.integrator = integrator
+        self.root = root
         self.get_state_flags = {'getPositions': True,
                                 'getVelocities': True,
                                 'enforcePeriodicBox': False,
@@ -251,7 +252,7 @@ if __name__ == "__main__":
                 force.addParticle(*force_data["particles"][str(simulation_data.types[i])])
         simulation_data.add_force(force)
 
-    simulation = simulation_data.make_simulation(data["platform"]["name"], data["platform"]["properties"])
+    simulation = simulation_data.make_simulation(data["platform"]["name"], data["platform"]["properties"], root)
 
     # compute forces on zero step
     forces = simulation.get_state().getForces(asNumpy=True).value_in_unit(unit.ev / unit.angstrom / unit.mole) / 6.02214076e23

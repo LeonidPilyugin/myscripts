@@ -6,7 +6,7 @@ from gi.repository import Aml
 import sys
 import copy
 
-def main(step, simulation, data):
+def main(step, simulation, data, *args, **kwargs):
     state = simulation.get_state()
     system = simulation.context.getSystem()
 

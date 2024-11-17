@@ -4,7 +4,7 @@ import sys
 
 count = 0
 
-def main(step, simulation, data):
+def main(step, simulation, data, *args, **kwargs):
     global count
 
     if count > data["move_stop"]:
