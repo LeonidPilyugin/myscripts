@@ -36,4 +36,4 @@ def main(step, simulation, data, *args, **kwargs):
     frame.atoms.set_prop("id", Aml.IntPerAtomProperty.from_array(ids))
     frame.atoms.set_prop("type", Aml.IntPerAtomProperty.from_array(types))
 
-    IO.dump_frame(frame, simulation.root.joinpath("nonmean").joinpath(f"{step}.trj"))
+    IO.dump_frame(frame, str(simulation.root.joinpath("nonmean").joinpath(f"{step}.trj")))
