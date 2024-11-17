@@ -307,8 +307,6 @@ if __name__ == "__main__":
 
     # simulate
     for i in tqdm(range(step, data["steps"], iter_steps)):
-        print(i)
-        sys.stdout.flush()
         simulation.mean_next(data["average_steps"])
         simulation.dump(i, thermo_file, str(trajectory_dir.joinpath(f"{i}.trj")))
 
