@@ -13,7 +13,7 @@ def main(step, simulation, data, *args, **kwargs):
     system = simulation.context.getSystem()
     state = simulation.get_state()
     n = system.getNumParticles()
-    positions = state.getPositions(asNumpy=True)
+    positions = state.getPositions(asNumpy=True).value_in_unit(unit.angstrom)
     velocities = state.getVelocities(asNumpy=True).value_in_unit(unit.angstrom / unit.picosecond)
 
     x = positions[:,0].tolist()
