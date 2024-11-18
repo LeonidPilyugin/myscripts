@@ -24,7 +24,7 @@ def main(step, simulation, data, *args, **kwargs):
     vz = velocities[:,2].tolist()
     types = frame.atoms.get_prop("type").get_arr()
     masses = frame.atoms.get_prop("mass").get_arr()
-    ids = list(range(n))
+    ids = list(range(1, n+1))
 
     frame.atoms.set_prop("x", Aml.DoublePerAtomProperty.from_array(x))
     frame.atoms.set_prop("y", Aml.DoublePerAtomProperty.from_array(y))
