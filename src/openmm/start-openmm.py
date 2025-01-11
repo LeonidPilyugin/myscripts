@@ -19,7 +19,7 @@ if __name__ == "__main__":
     init_data = data.pop("init")
 
     simulation_id = init_data["id"]
-    simulation_path = HOME.joinpath(simulation_id)
+    simulation_path = HOME.joinpath(*simulation_id.split("."))
     
     assert not simulation_path.exists()
     simulation_path.mkdir(parents=True)
