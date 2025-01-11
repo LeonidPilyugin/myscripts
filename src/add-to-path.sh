@@ -1,10 +1,10 @@
 curdir=$PWD
 
-for subdir in $PWD/*; do
+for subdir in $(ls -d -- */); do
     export PATH=$PATH:$PWD/$subdir
 
-    if [ -f $PWD/$subdir/add-to-path.sh ]; then
-        cd $PWD/$subdir
+    if [ -f $subdir/add-to-path.sh ]; then
+        cd $subdir
         source ./add-to-path.sh
         cd ..
     fi
