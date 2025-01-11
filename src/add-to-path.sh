@@ -5,7 +5,7 @@ for subdir in $PWD; do
 
     if [ -f $PWD/$subdir/add-to-path.sh ]; then
         cd $PWD/$subdir
-        source add-to-path.sh
+        source ./add-to-path.sh
         cd ..
     fi
 done
