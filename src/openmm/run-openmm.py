@@ -203,8 +203,11 @@ class Load(OpenmmAddOn):
             data.set_element("filesystem.root", AmlBasicTypes.String.create(sys.argv[1]))
             data.set_element("filesystem.thermofile", AmlBasicTypes.String.create(str(Path(sys.argv[1]).joinpath("thermo.csv"))))
 
-            for action in params.sequence:
-                action.perform(data)
+            iteration = repr_obj.get_element("iteration").get_val()
+
+            if iteration == 0:
+                for action in params.sequence:
+                    action.perform(data)
 
     def __init__(self):
         self.action = Load.Action()
