@@ -1,6 +1,6 @@
 curdir=$PWD
 
-for subdir in $PWD; do
+for subdir in $PWD/*; do
     export PATH=$PATH:$PWD/$subdir
 
     if [ -f $PWD/$subdir/add-to-path.sh ]; then
