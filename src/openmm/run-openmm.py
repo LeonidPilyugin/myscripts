@@ -11,7 +11,7 @@ from gi.repository import AmlCore, AmlBasicTypes, AmlParticles, AmlBox, AmlLammp
 from addon import OpenmmAddOn, OpenmmSimulation, Logger
 from addonloader import AddOnLoader
 
-logging.basicConfig(filename='myapp.log', level=logging.INFO)
+logging.basicConfig(filename='log.log', level=logging.INFO)
 logger = logging.getLogger()
 
 addon_loader = AddOnLoader(logger=logger)
