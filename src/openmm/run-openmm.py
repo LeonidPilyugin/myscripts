@@ -4,13 +4,17 @@ import sys
 import toml
 from tqdm import tqdm
 from pathlib import Path
+import logging
 import openmm
 import numpy as np
 from gi.repository import AmlCore, AmlBasicTypes, AmlParticles, AmlBox, AmlLammpsIo
-from addon import OpenmmAddOn, OpenmmSimulation
+from addon import OpenmmAddOn, OpenmmSimulation, Logger
 from addonloader import AddOnLoader
 
-addon_loader = AddOnLoader()
+logging.basicConfig(filename='myapp.log', level=logging.INFO)
+logger = logging.getLogger()
+
+addon_loader = AddOnLoader(logger=logger)
 addon_loader.load()
 
 class Checkpoint:
@@ -70,10 +74,14 @@ class Checkpoint:
             Checkpoint.reader_params.set_filepath(str(Checkpoint.root.joinpath(f"configuration.lammpsdump")))
         else:
             Checkpoint.reader_params.set_filepath(str(Checkpoint.chpdir.joinpath(f"{last_checkpoint}.lammpsdump")))
+
         Checkpoint.reader_action.set_params(Checkpoint.reader_params)
         
         # read repr
         repr_obj = AmlCore.DataCollection()
+
+        logging.info(f"Reading lammps dump {Checkpoint.reader_params.get_filepath()}")
+
         Checkpoint.reader_action.perform(repr_obj)
         repr_obj.set_element("iteration", AmlBasicTypes.Int64.create(last_checkpoint))
 
@@ -84,6 +92,7 @@ class Checkpoint:
         total = 0
 
         if last_checkpoint > 0:
+            logger.info(f"Reading thermo")
             # read thermo
             with open(Checkpoint.chpdir.joinpath(f"{last_checkpoint}.thermo"), "r") as f:
                 step, potential, kinetic, total, temperature = map(float, f.read().strip().split())
@@ -93,6 +102,8 @@ class Checkpoint:
         repr_obj.set_element("thermo.kinetic", AmlBasicTypes.Float64.create(kinetic))
         repr_obj.set_element("thermo.potential", AmlBasicTypes.Float64.create(potential))
         repr_obj.set_element("thermo.total", AmlBasicTypes.Float64.create(total))
+
+        logger.info("Creating openmm object")
 
         openmm_obj = OpenmmSimulation()
 
@@ -146,6 +157,8 @@ class Checkpoint:
     def dump_checkpoint(data):
         iteration = data.get_element("repr.iteration").get_val()
 
+        logger.info(f"Dumping checkpoint for iteration {iteration}")
+
         # dump lammps
         Checkpoint.writer_params.set_filepath(str(Checkpoint.chpdir.joinpath(f"{iteration}.lammpsdump")))
         Checkpoint.writer_action.set_params(Checkpoint.writer_params)
@@ -197,6 +210,10 @@ class Load(OpenmmAddOn):
 
             openmm_obj, repr_obj = Checkpoint.load_last_checkpoint(params.integrator, params.platform, params.potentials, params.potential_data)
 
+            logger_obj = Logger()
+            logger_obj.logger = logger
+            data.set_element("logger", logger_obj)
+
             data.set_element("openmm", openmm_obj)
             data.set_element("repr", repr_obj)
 
@@ -206,7 +223,9 @@ class Load(OpenmmAddOn):
             iteration = repr_obj.get_element("iteration").get_val()
 
             if iteration == 0:
+                logger.info(f"Performing load action sequence")
                 for action in params.sequence:
+                    logger.info(f"Performing action {action}")
                     action.perform(data)
 
     def __init__(self):
@@ -276,9 +295,11 @@ class Loop(OpenmmAddOn):
 
             start = data.get_element("repr.iteration").get_val()
             for i in tqdm(range(start, params.iterations)):
+                logger.info(f"Performing iteration {i}")
                 data.get_element("repr.iteration").set_val(i)
                 for every, action in params.sequence:
                     if i % every == 0:
+                        logger.info(f"Performing action {action}")
                         action.perform(data)
                 if i % params.checkpoint_every == 0:
                     Checkpoint.dump_checkpoint(data)
@@ -313,6 +334,7 @@ class Loop(OpenmmAddOn):
 if __name__ == "__main__":
     root = Path(sys.argv[1])
 
+    logger.info("Reading descriptor")
     with open(root.joinpath("descriptor.toml")) as f:
         data = toml.load(f)
 
@@ -328,4 +350,6 @@ if __name__ == "__main__":
     
     load_action.perform(data)
     loop_action.perform(data)
+
+    logger.info("Finished")
 

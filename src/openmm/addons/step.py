@@ -30,6 +30,8 @@ class PerformStepAction(AmlCore.Action):
         return ""
 
     def do_perform(self, data : AmlCore.DataCollection):
+        logger = data.get_element("logger").logger
+
         params = self.get_params()
         openmm_object = data.get_element("openmm")
 
@@ -44,6 +46,8 @@ class PerformStepAction(AmlCore.Action):
         velocities = np.zeros_like(positions)
         masses = np.asarray(data.get_element("repr.particles").get_prop("mass").get_arr())
         masses /= scipy.constants.N_A * 1000
+
+        logger.info("Performing iterations")
 
         if (params.mean):
             for _ in range(params.number):
@@ -85,6 +89,8 @@ class PerformStepAction(AmlCore.Action):
             T = (masses * np.sum(velocities.value_in_unit(openmm.unit.meter / openmm.unit.second) ** 2, axis=1)).sum() / scipy.constants.k / np.count_nonzero(masses) / 3
             positions = positions.value_in_unit(openmm_object.unit.length)
             velocities = velocities.value_in_unit(openmm_object.unit.velocity)
+
+        logger.info("Updating repr dataobject")
 
         data.get_element("repr.thermo.temperature").set_val(T)
         data.get_element("repr.thermo.potential").set_val(u)

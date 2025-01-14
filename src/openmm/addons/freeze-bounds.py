@@ -25,6 +25,7 @@ class FreezeBoundsAction(AmlCore.Action):
         return ""
 
     def do_perform(self, data : AmlCore.DataCollection):
+        logger = data.get_element("logger").logger
         params = self.get_params()
 
         particles = data.get_element("repr.particles")
@@ -37,14 +38,20 @@ class FreezeBoundsAction(AmlCore.Action):
         velocities = state.getVelocities(asNumpy=True)
         masses = np.asarray(particles.get_prop("mass").get_arr())
 
+        logger.info("Getting new masses")
+
         for i in range(n):
             if positions[i][2] > params.top * openmm_obj.unit.length or positions[i][2] < params.bottom * openmm_obj.unit.length:
                 system.setParticleMass(i, 0.0)
                 masses[i] = 0.0
 
+        logger.info("Reinitializing OpenMM")
+
         openmm_obj.context.reinitialize()
         openmm_obj.context.setPositions(positions)
         openmm_obj.context.setVelocities(velocities)
+
+        logger.info("Updating repr DataObject")
 
         particles.set_prop("mass", AmlParticles.Float64PerParticleProperty.from_array(masses.tolist()))
 

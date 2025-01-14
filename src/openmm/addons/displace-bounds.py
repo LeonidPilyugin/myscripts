@@ -27,6 +27,7 @@ class DisplaceBoundsAction(AmlCore.Action):
         return ""
 
     def do_perform(self, data : AmlCore.DataCollection):
+        logger = data.get_element("logger").logger
         params = self.get_params()
 
         particles = data.get_element("repr.particles")
@@ -37,6 +38,8 @@ class DisplaceBoundsAction(AmlCore.Action):
         n = system.getNumParticles()
         positions = state.getPositions(asNumpy=True)
         velocities = state.getVelocities(asNumpy=True)
+
+        logger.info("Displacing atoms")
 
         if params.top is None:
             assert params.bottom is not None
@@ -49,9 +52,13 @@ class DisplaceBoundsAction(AmlCore.Action):
                 if positions[i][2] > params.top * openmm_obj.unit.length:
                     positions[i][0] += params.magnitude * openmm_obj.unit.length
 
+        logger.info("Updating OpenMM context")
+
 
         openmm_obj.context.setPositions(positions)
         openmm_obj.context.setVelocities(velocities)
+
+        logger.info("Updating repr DataObject")
 
         particles.set_prop("x", AmlParticles.Float64PerParticleProperty.from_array(positions[:,0].tolist()))
 
