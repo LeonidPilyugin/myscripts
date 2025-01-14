@@ -32,10 +32,10 @@ class AddOnLoader:
                 self.addon_classes[name] = obj
 
     def load(self):
-        sources = self.dir.glob("*.py")
+        sources = list(self.dir.glob("*.py"))
         
         if self.logger:
-            self.logger.info(f"Loading addons. Found {len(list(sources))} files")
+            self.logger.info(f"Loading addons. Found {len(sources)} files")
 
         for path in sources:
             self.load_addons_from_file(path)
