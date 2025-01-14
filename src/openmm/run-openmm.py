@@ -11,7 +11,9 @@ from gi.repository import AmlCore, AmlBasicTypes, AmlParticles, AmlBox, AmlLammp
 from addon import OpenmmAddOn, OpenmmSimulation, Logger
 from addonloader import AddOnLoader
 
-logging.basicConfig(filename='log.log', level=logging.INFO)
+root = Path(sys.argv[1])
+
+logging.basicConfig(filename=str(root.joinpath("log.log")), level=logging.INFO)
 logger = logging.getLogger()
 
 addon_loader = AddOnLoader(logger=logger)
@@ -332,8 +334,6 @@ class Loop(OpenmmAddOn):
 
 
 if __name__ == "__main__":
-    root = Path(sys.argv[1])
-
     logger.info("Reading descriptor")
     with open(root.joinpath("descriptor.toml")) as f:
         data = toml.load(f)
