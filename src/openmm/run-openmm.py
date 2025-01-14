@@ -301,7 +301,7 @@ class Loop(OpenmmAddOn):
                 data.get_element("repr.iteration").set_val(i)
                 for every, action in params.sequence:
                     if i % every == 0:
-                        logger.info(f"Performing action {action.__name__}")
+                        logger.info(f"Performing action {type(action).__name__}")
                         action.perform(data)
                 if i % params.checkpoint_every == 0:
                     Checkpoint.dump_checkpoint(data)
