@@ -13,7 +13,7 @@ from addonloader import AddOnLoader
 
 root = Path(sys.argv[1])
 
-logging.basicConfig(filename=str(root.joinpath("log.log")), level=logging.INFO)
+logging.basicConfig(filename=str(root.joinpath("log.log")), level=logging.INFO, format="%(asctime)s: %(message)s")
 logger = logging.getLogger()
 
 addon_loader = AddOnLoader(logger=logger)
@@ -301,7 +301,7 @@ class Loop(OpenmmAddOn):
                 data.get_element("repr.iteration").set_val(i)
                 for every, action in params.sequence:
                     if i % every == 0:
-                        logger.info(f"Performing action {action}")
+                        logger.info(f"Performing action {action.__name__}")
                         action.perform(data)
                 if i % params.checkpoint_every == 0:
                     Checkpoint.dump_checkpoint(data)
