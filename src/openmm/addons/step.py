@@ -61,7 +61,7 @@ class PerformStepAction(AmlCore.Action):
                 velocities = np.add(velocities, v.value_in_unit(openmm_object.unit.velocity))
                 u += state.getPotentialEnergy().value_in_unit(openmm_object.unit.energy)
                 t += state.getKineticEnergy().value_in_unit(openmm_object.unit.energy)
-                T += (masses * np.sum(v.value_in_unit(openmm.unit.meter / openmm.unit.second) ** 2, axis=1)).sum() / scipy.constants.k / len(positions) / 3
+                T += (masses * np.sum(v.value_in_unit(openmm.unit.meter / openmm.unit.second) ** 2, axis=1)).sum() / scipy.constants.k / np.count_nonzero(masses) / 3
 
             positions /= params.number
             velocities /= params.number
@@ -82,7 +82,7 @@ class PerformStepAction(AmlCore.Action):
             velocities = state.getVelocities(asNumpy=True)
             u = state.getPotentialEnergy().value_in_unit(openmm_object.unit.energy)
             t = state.getKineticEnergy().value_in_unit(openmm_object.unit.energy)
-            T = (masses * np.sum(velocities.value_in_unit(openmm.unit.meter / openmm.unit.second) ** 2, axis=1)).sum() / scipy.constants.k / len(positions) / 3
+            T = (masses * np.sum(velocities.value_in_unit(openmm.unit.meter / openmm.unit.second) ** 2, axis=1)).sum() / scipy.constants.k / np.count_nonzero(masses) / 3
             positions = positions.value_in_unit(openmm_object.unit.length)
             velocities = velocities.value_in_unit(openmm_object.unit.velocity)
 
