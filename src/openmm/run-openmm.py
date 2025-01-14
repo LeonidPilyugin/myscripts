@@ -227,7 +227,7 @@ class Load(OpenmmAddOn):
             if iteration == 0:
                 logger.info(f"Performing load action sequence")
                 for action in params.sequence:
-                    logger.info(f"Performing action {action}")
+                    logger.info(f"Performing action {type(action).__name__}")
                     action.perform(data)
 
     def __init__(self):
