@@ -150,6 +150,11 @@ class Checkpoint:
         context.setPositions(positions)
         context.setVelocities(velocities)
 
+        if last_checkpoint > 0:
+            logger.info(f"Loading checkpoint")
+            with open(Checkpoint.chpdir.joinpath(f"{last_checkpoint}.openmmcheckpoint"), "b+r") as f:
+                context.loadCheckpoint(f.read())
+
         openmm_obj.context = context
         openmm_obj.integrator = integrator
 
