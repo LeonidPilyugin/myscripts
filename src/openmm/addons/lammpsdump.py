@@ -1,12 +1,12 @@
-from addon import OpenmmAddOn, OpenmmSimulation
+from addon import OpenmmAddOn
 from gi.repository import AmlCore, AmlLammpsIo
 from pathlib import Path
 
 class DumpActionParams(AmlCore.ActionParams):
     def __init__(self):
         super().__init__()
-        self.action = AmlLammpsIo.DumpWriter()
-        self.action_params = AmlLammpsIo.DumpWriterParams()
+        self.action = AmlLammpsIo.BinaryDumpWriter()
+        self.action_params = AmlLammpsIo.WriterParams()
         self.dumpdir = ""
 
     def do_copy(self):

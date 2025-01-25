@@ -25,7 +25,7 @@ class Checkpoint:
     chpdir.mkdir(exist_ok=True)
 
     writer_action = AmlLammpsIo.DumpWriter()
-    writer_params = AmlLammpsIo.DumpWriterParams()
+    writer_params = AmlLammpsIo.WriterParams()
     writer_params.set_box_id("repr.box")
     writer_params.set_timestep_id("repr.step")
     writer_params.set_particles_id("repr.particles")
@@ -44,7 +44,7 @@ class Checkpoint:
     )
 
     reader_action = AmlLammpsIo.DumpReader()
-    reader_params = AmlLammpsIo.DumpReaderParams()
+    reader_params = AmlLammpsIo.ReaderParams()
     reader_params.set_box_id("box")
     reader_params.set_timestep_id("step")
     reader_params.set_particles_id("particles")
