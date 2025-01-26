@@ -153,8 +153,6 @@ def lammps_run(params: LammpsParams):
     print(f"{params.parameters}: T = {temperature[0]} +/- {temperature[1]}, P = {current_pressure[0]} +/- {current_pressure[1]}")
     sys.stdout.flush()
 
-    exit(1)
-
     return temperature, current_pressure
 
 def optimize(params: Params, current_params=None):
