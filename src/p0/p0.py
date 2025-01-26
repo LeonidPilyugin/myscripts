@@ -62,7 +62,7 @@ class LammpsParams:
     random_seed: int = 10
     nvt_ng_param: float = 0.3
     timestep: float = 1e-3
-    processes: int = 4
+    processes: int = 1
 
 @dataclass
 class GDParams:
@@ -137,8 +137,10 @@ def lammps_run(params: LammpsParams):
                         except Exception:
                             continue
     finally:
-        os.system(f"rm {filename}*")
         pass
+        #os.system(f"rm {filename}*")
+        # for i in range(params.processes):
+        #     os.system(f"rm {filename}{i}.log")
 
     ts = [ np.mean(x) for x in temperatures.values() ]
     dts = [ np.std(x) for x in temperatures.values() ]
@@ -152,6 +154,8 @@ def lammps_run(params: LammpsParams):
 
     print(f"{params.parameters}: T = {temperature[0]} +/- {temperature[1]}, P = {current_pressure[0]} +/- {current_pressure[1]}")
     sys.stdout.flush()
+
+    exit(1)
 
     return temperature, current_pressure
 
