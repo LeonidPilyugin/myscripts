@@ -90,6 +90,8 @@ class PerformStepAction(AmlCore.Action):
             positions = positions.value_in_unit(openmm_object.unit.length)
             velocities = velocities.value_in_unit(openmm_object.unit.velocity)
 
+        forces = state.getForces(asNumpy=True).value_in_unit(openmm_object.unit.force)
+
         logger.info("Updating repr dataobject")
 
         data.get_element("repr.thermo.temperature").set_val(T)
@@ -107,6 +109,9 @@ class PerformStepAction(AmlCore.Action):
         particles.set_prop("vx", AmlParticles.Float64PerParticleProperty.from_array(velocities[:,0].tolist()))
         particles.set_prop("vy", AmlParticles.Float64PerParticleProperty.from_array(velocities[:,1].tolist()))
         particles.set_prop("vz", AmlParticles.Float64PerParticleProperty.from_array(velocities[:,2].tolist()))
+        particles.set_prop("fx", AmlParticles.Float64PerParticleProperty.from_array(forces[:,0].tolist()))
+        particles.set_prop("fy", AmlParticles.Float64PerParticleProperty.from_array(forces[:,1].tolist()))
+        particles.set_prop("fz", AmlParticles.Float64PerParticleProperty.from_array(forces[:,2].tolist()))
 
 
 class PerformStep(OpenmmAddOn):
