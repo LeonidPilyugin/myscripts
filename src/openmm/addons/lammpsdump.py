@@ -3,9 +3,9 @@ from gi.repository import AmlCore, AmlLammpsIo
 from pathlib import Path
 
 class DumpActionParams(AmlCore.ActionParams):
-    def __init__(self):
+    def __init__(self, binary=True):
         super().__init__()
-        self.action = AmlLammpsIo.BinaryDumpWriter()
+        self.action = AmlLammpsIo.BinaryDumpWriter() if binary else AmlLammpsIo.DumpWriter()
         self.action_params = AmlLammpsIo.WriterParams()
         self.dumpdir = ""
 
@@ -40,9 +40,10 @@ class DumpAction(AmlCore.Action):
 class LammpsDump(OpenmmAddOn):
     def __init__(self):
         self.action = DumpAction()
-        self.params = DumpActionParams()
+        self.params = None
 
     def init_dict(self, dictionary):
+        self.params = DumpActionParams(dictionary.get("binary", True))
         self.params.dumpdir = dictionary["directory"]
         self.params.action_params.set_box_id("repr.box")
         self.params.action_params.set_timestep_id("repr.step")
