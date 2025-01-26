@@ -161,7 +161,7 @@ def optimize(params: Params, current_params=None):
         current_params = np.array([5.0] * parameters.gd_params.parameters)
 
     # create start parameters
-    params_history = [current_params, current_params * 0.6]
+    params_history = [current_params, current_params * 0.8]
     pressure_history = []
     temperature_history = []
 
