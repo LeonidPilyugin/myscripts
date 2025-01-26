@@ -118,6 +118,7 @@ def lammps_run(params: LammpsParams):
 
             with open(f"{filename}{i}.log") as f:
                 read_thermo = False
+                first_line = True
                 for line in f.readlines():
                     if line.startswith("Per MPI"):
                         read_thermo = True
@@ -127,6 +128,9 @@ def lammps_run(params: LammpsParams):
                         continue
                     if read_thermo:
                         try:
+                            if first_line:
+                                first_line = False
+                                continue
                             _, temp, pres = map(float, line.split())
                             temperatures[i].append(temp)
                             pressures[i].append(pres)
