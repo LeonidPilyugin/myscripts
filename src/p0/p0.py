@@ -128,19 +128,17 @@ def lammps_run(params: LammpsParams):
                         continue
                     if read_thermo:
                         try:
-                            if first_line:
-                                first_line = False
+                            step, temp, pres = map(float, line.split())
+                            if step <= params.relax_steps:
                                 continue
-                            _, temp, pres = map(float, line.split())
                             temperatures[i].append(temp)
                             pressures[i].append(pres)
                         except Exception:
                             continue
     finally:
-        pass
-        #os.system(f"rm {filename}*")
-        # for i in range(params.processes):
-        #     os.system(f"rm {filename}{i}.log")
+        os.system(f"rm {filename}*")
+        for i in range(params.processes):
+            os.system(f"rm {filename}{i}.log")
 
     ts = [ np.mean(x) for x in temperatures.values() ]
     dts = [ np.std(x) for x in temperatures.values() ]
