@@ -47,19 +47,7 @@ class LammpsDump(OpenmmAddOn):
         self.params.action_params.set_box_id("repr.box")
         self.params.action_params.set_timestep_id("repr.step")
         self.params.action_params.set_particles_id("repr.particles")
-        self.params.action_params.set_properties(
-            [
-                "id",
-                "type",
-                "mass",
-                "x",
-                "y",
-                "z",
-                "vx",
-                "vy",
-                "vz",
-            ]
-        )
+        self.params.action_params.set_properties(dictionary["columns"])
         self.action.set_params(self.params)
 
     def get_action(self):
