@@ -11,7 +11,7 @@ class Unit:
         self.velocity = self.length / self.time
         self.energy = openmm.unit.kilojoule_per_mole
         self.mass = openmm.unit.atom_mass_units
-        self.force = self.energy / openmm.unit.length
+        self.force = self.energy / self.length
 
 
 class Logger(AmlCore.DataObject):
