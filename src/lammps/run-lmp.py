@@ -90,7 +90,7 @@ def modify_script(stage, checkpoint, steps):
                 line = line.replace("__MEAN", str(stages[stage_name]["mean"]))
                 line = line.replace("__DUMP_EVERY", str(stages[stage_name]["dump"]))
                 line = line.replace("__DUMP_PATH", str(trajectory_dir.joinpath(stage_name)) + "/*.trj")
-                line = line.replace("__TIMESTEP", str(stages[stage_name]["timestep"]))
+                # line = line.replace("__TIMESTEP", str(stages[stage_name]["timestep"]))
                 line = line.replace("__THERMO_EVERY", str(stages[stage_name]["thermo"]))
                 line = line.replace("__THERMO_MEAN", str(stages[stage_name]["thermo_mean"]))
                 
@@ -104,7 +104,7 @@ def modify_script(stage, checkpoint, steps):
                     if stages[stage_name]['checkpoint'] > 0:
                         output_file.write(f"restart {stages[stage_name]['checkpoint']} '{checkpoint_dir.joinpath(stage_name)}/*.checkpoint'\n")
 
-                    output_file.write(f"timestep {stages[stage_name]['timestep']}\n")
+                    # output_file.write(f"timestep {stages[stage_name]['timestep']}\n")
 
                     output_file.write(f"thermo {stages[stage_name]['thermo']}\n")
 
