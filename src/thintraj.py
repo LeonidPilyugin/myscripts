@@ -29,14 +29,13 @@ print(f"Found {len(steps)} files. Total disk usage {size:.2f} G")
 
 keep_steps = steps[::keep]
 
-to_delete = set(steps) - set(keep_steps)
-
 size = 0.0
 for file in path.glob("*"):
     if not file.is_file():
         continue
-    if int(regex.search(file.name).group(1)) in to_delete:
-        size += file.stat().st_size / 2 ** 30
-        file.unlink()
+    if int(regex.search(file.name).group(1)) in keep_steps:
+        continue
+    size += file.stat().st_size / 2 ** 30
+    file.unlink()
 
-print(f"Removed {len(to_delete)} files. Freed {size:.2f} G")
+print(f"Removed {len(steps) - len(keep_steps)} files. Freed {size:.2f} G")
