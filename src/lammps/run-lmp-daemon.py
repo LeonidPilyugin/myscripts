@@ -30,8 +30,8 @@ for stage in stages:
         time.sleep(1)
         if not any(trajectory_dir.joinpath(stage).joinpath(stages[stage]["dumps"][0]["name"]).iterdir()):
             continue
-        _max_file = max(map(lambda x: int(x.name.split(".")[0]), trajectory_dir.joinpath(stage).iterdir()))
-        _min_file = min(map(lambda x: int(x.name.split(".")[0]), trajectory_dir.joinpath(stage).iterdir()))
+        _max_file = max(map(lambda x: int(x.name.split(".")[0]), trajectory_dir.joinpath(stage).joinpath(stages[stage]["dumps"][0]["name"]).iterdir()))
+        _min_file = min(map(lambda x: int(x.name.split(".")[0]), trajectory_dir.joinpath(stage).joinpath(stages[stage]["dumps"][0]["name"]).iterdir()))
         _max_file -= _min_file
 
         t.update(_max_file - max_file)
