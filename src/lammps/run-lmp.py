@@ -41,6 +41,10 @@ for name in stage_names:
     p = trajectory_dir.joinpath(name)
     if not p.exists(): p.mkdir()
 
+    for dump in stages[name]["dumps"]:
+        pp = p.joinpath(dump["name"])
+        if not pp.exists(): pp.mkdir()
+
 def find_checkpoint():
     stage = None
     checkpoint = None

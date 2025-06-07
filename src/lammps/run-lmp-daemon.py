@@ -28,7 +28,7 @@ for stage in stages:
 
     while not "last.checkpoint" in map(lambda x: x.name, checkpoint_dir.joinpath(stage).iterdir()):
         time.sleep(1)
-        if not any(trajectory_dir.joinpath(stage).iterdir()):
+        if not any(trajectory_dir.joinpath(stage).joinpath(stages[stage]["dumps"][0]["name"]).iterdir()):
             continue
         _max_file = max(map(lambda x: int(x.name.split(".")[0]), trajectory_dir.joinpath(stage).iterdir()))
         _min_file = min(map(lambda x: int(x.name.split(".")[0]), trajectory_dir.joinpath(stage).iterdir()))
