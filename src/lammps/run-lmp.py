@@ -60,7 +60,7 @@ def find_checkpoint():
         max_num = max(map(lambda x: int(x.name.split('.')[0]), list(directory.iterdir())))
         checkpoint = directory.joinpath(f"{max_num}.checkpoint")
         steps = stages[stage]["run"] - max_num
-        
+
         for stg in stage_names[:stage_names.index(name)]:
             steps += stages[stg]["run"]
 
@@ -89,11 +89,11 @@ def modify_script(stage, checkpoint, steps):
             if not line.strip().split() or line.strip() != "run __RUN":
                 line = line.replace("__MEAN", str(stages[stage_name]["mean"]))
                 line = line.replace("__DUMP_EVERY", str(stages[stage_name]["dump"]))
-                line = line.replace("__DUMP_PATH", str(trajectory_dir.joinpath(stage_name)) + "/*.trj")
+                line = line.replace("__DUMP_PATH", str(trajectory_dir.joinpath(stage_name)))
                 # line = line.replace("__TIMESTEP", str(stages[stage_name]["timestep"]))
                 line = line.replace("__THERMO_EVERY", str(stages[stage_name]["thermo"]))
                 line = line.replace("__THERMO_MEAN", str(stages[stage_name]["thermo_mean"]))
-                
+
                 if not stage is None and stage_names.index(stage) >= stage_names.index(stage_name):
                     if len(line.strip().split()) == 0 or line.strip().split()[0] not in IGNORE:
                         line = "# " + line
