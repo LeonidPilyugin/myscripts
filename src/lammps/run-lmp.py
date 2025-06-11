@@ -68,7 +68,7 @@ def find_checkpoint():
         for stg in stage_names[:stage_names.index(name)]:
             steps += stages[stg]["run"]
 
-        for trj_file in trajectory_dir.joinpath(name).joinpath(list(stages.keys())[-1]).iterdir():
+        for trj_file in trajectory_dir.joinpath(name).joinpath(stages[name]["dumps"][-1]).iterdir():
             if int(trj_file.name.split(".")[0]) > max_num:
                 trj_file.unlink()
         break
