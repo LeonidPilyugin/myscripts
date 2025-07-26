@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     try:
         with open(filename, "w") as f:
-            json.dump(settings, f)
+            json.dump(descriptors, f)
         assert os.system(f"zsh -c 'source ~/.zshrc && spmi load {filename} && spmi start simulation.{data['id']}'") == 0
     finally:
         os.unlink(filename)
