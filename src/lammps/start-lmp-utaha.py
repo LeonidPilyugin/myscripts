@@ -43,7 +43,7 @@ if __name__ == "__main__":
                 f"source ~/.zshrc && conda activate {conda_env} &&" +
                 f"python3 {Path(__file__).parent.joinpath('run-lmp.py')} {simulation_path}"
             ]
-        }
+        },
         "backend": {
             "type": "UtahaScreenBackendBackend",
         }
