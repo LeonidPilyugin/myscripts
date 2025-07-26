@@ -54,7 +54,7 @@ if __name__ == "__main__":
     try:
         with open(filename, "w") as f:
             json.dump(descriptor, f)
-        assert os.system(f"zsh -c 'source ~/.zshrc && utaha --load {filename} && utaha --start simulation.{data['id']}'") == 0
+        # assert os.system(f"zsh -c 'source ~/.zshrc && utaha --load {filename} && utaha --start simulation.{data['id']}'") == 0
         assert(os.system(f"utaha --load {filename}"))
         assert(os.system(f"utaha --start --alias 'simulation.{data['id']}'"))
     finally:
