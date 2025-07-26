@@ -49,7 +49,7 @@ if __name__ == "__main__":
         }
     }
 
-    filename = f"/tmp/{os.urandom(32).hex()}.toml"
+    filename = f"/tmp/{os.urandom(32).hex()}.json"
 
     try:
         with open(filename, "w") as f:
@@ -58,4 +58,5 @@ if __name__ == "__main__":
         assert(os.system(f"utaha --load {filename}"))
         assert(os.system(f"utaha --start --alias 'simulation.{data['id']}'"))
     finally:
-        os.unlink(filename)
+        # os.unlink(filename)
+        pass
