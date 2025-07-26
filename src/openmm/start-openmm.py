@@ -20,11 +20,11 @@ if __name__ == "__main__":
 
     simulation_id = init_data["id"]
     simulation_path = HOME.joinpath(*simulation_id.split("."))
-    
+
     assert not simulation_path.exists()
     simulation_path.mkdir(parents=True)
     shutil.copy(init_data["configuration"], simulation_path.joinpath("configuration.lammpsdump"))
-    
+
     with open(simulation_path.joinpath("descriptor.toml"), "w") as f:
         toml.dump(data, f)
 
