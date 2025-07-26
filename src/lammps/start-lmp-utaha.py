@@ -55,7 +55,7 @@ if __name__ == "__main__":
         with open(filename, "w") as f:
             json.dump(descriptor, f)
         # assert os.system(f"zsh -c 'source ~/.zshrc && utaha --load {filename} && utaha --start simulation.{data['id']}'") == 0
-        assert(os.system(f"utaha --load {filename}"))
-        assert(os.system(f"utaha --start --alias 'simulation.{data['id']}'"))
+        assert 0 == os.system(f"utaha --load {filename}")
+        assert 0 == os.system(f"utaha --start --alias 'simulation.{data['id']}'")
     finally:
         os.unlink(filename)
