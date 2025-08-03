@@ -45,7 +45,7 @@ if __name__ == "__main__":
             ]
         },
         "backend": {
-            "type": "UtahaScreenBackendBackend",
+            "type": "UtahaPosixBackendBackend",
         }
     }
 
