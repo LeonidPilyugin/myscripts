@@ -35,8 +35,8 @@ if __name__ == "__main__":
             "alias": f"simulation.{data['id']}",
             "comment": data["comment"],
         },
-        "wrapper": {
-            "type": "UtahaDefaultWrapperWrapper",
+        "job": {
+            "type": "UtahaJobsShellJob",
             "command": [
                 "zsh",
                 "-c",
