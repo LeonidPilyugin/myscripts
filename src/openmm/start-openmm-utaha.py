@@ -10,23 +10,25 @@ from pathlib import Path
 HOME = Path(os.environ.get("SIMULATIONS_HOME", Path.home().joinpath("simulations"))).expanduser()
 
 if __name__ == "__main__":
-    with open(sys.argv[1]) as f:
-        data = toml.load(f)["simulation"]
-    simulation_id = data["id"]
-    simulation_path = HOME.joinpath(*simulation_id.split("."))
-    input_file = data["input_file"]
+    assert len(sys.argv) == 2
 
-    # create directory
+    with open(sys.argv[1]) as f:
+        data = toml.load(f)
+
+    assert "init" in data
+    init_data = data.pop("init")
+
+    simulation_id = init_data["id"]
+    simulation_path = HOME.joinpath(*simulation_id.split("."))
+
     assert not simulation_path.exists()
     simulation_path.mkdir(parents=True)
-    simulation_path.joinpath("src").mkdir()
-    simulation_path.joinpath("log").mkdir()
-    simulation_path.joinpath("trajectory").mkdir()
-    simulation_path.joinpath("checkpoint").mkdir()
-    shutil.copy(Path(input_file).expanduser(), simulation_path.joinpath("src").joinpath("script.lmp"))
-    shutil.copy(Path(sys.argv[1]).expanduser(), simulation_path.joinpath("descriptor.toml"))
+    shutil.copy(init_data["configuration"], simulation_path.joinpath("configuration.lammpsdump"))
 
-    conda_env = data["environment"]
+    with open(simulation_path.joinpath("descriptor.toml"), "w") as f:
+        toml.dump(data, f)
+
+    conda_env = init_data["environment"]
 
     # start utaha
     descriptor = {
@@ -40,7 +42,7 @@ if __name__ == "__main__":
                 "zsh",
                 "-c",
                 f"source ~/.zshrc && conda activate {conda_env} &&" +
-                f"python3 {Path(__file__).parent.joinpath('run-lmp.py')} {simulation_path}"
+                f"python3 {Path(__file__).parent.joinpath('run-openmm.py')} {simulation_path}"
             ]
         },
         "backend": {
