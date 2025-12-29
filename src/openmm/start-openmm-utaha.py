@@ -33,8 +33,8 @@ if __name__ == "__main__":
     # start utaha
     descriptor = {
         "taskdata": {
-            "alias": f"simulation.{data['id']}",
-            "comment": data["comment"],
+            "alias": f"simulation.{init_data['id']}",
+            "comment": init_data["comment"],
         },
         "job": {
             "type": "UtahaJobsShellJob",
@@ -57,6 +57,6 @@ if __name__ == "__main__":
             json.dump(descriptor, f)
         # assert os.system(f"zsh -c 'source ~/.zshrc && utaha --load {filename} && utaha --start simulation.{data['id']}'") == 0
         assert 0 == os.system(f"utaha --load {filename}")
-        assert 0 == os.system(f"utaha --start --alias 'simulation.{data['id']}'")
+        assert 0 == os.system(f"utaha --start --alias 'simulation.{init_data['id']}'")
     finally:
         os.unlink(filename)
